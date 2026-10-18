@@ -289,7 +289,7 @@ const setPref = (key: PrefKey, value: string) =>
 const CUSTOMIZED_API_HELPER_TEXT =
   "Choose a preset above, or switch to Customized to enter a full base URL or endpoint manually.";
 const LEGACY_CODEX_AUTH_HELPER_TEXT =
-  "Uses credentials from `codex login` to call the Codex backend directly through the llm-for-zotero harness. This convenient legacy mode does not provide App Server sessions, MCP or runtime management, sandbox controls, approvals, or permission settings. Use Codex App Server for the full Codex runtime experience.";
+  "Uses credentials from `codex login` to call the Codex backend directly through the CiteBloom harness. This convenient legacy mode does not provide App Server sessions, MCP or runtime management, sandbox controls, approvals, or permission settings. Use Codex App Server for the full Codex runtime experience.";
 const CODEX_APP_SERVER_HELPER_TEXT =
   "Recommended official Codex integration. Runs the local `codex app-server` CLI as the native Codex runtime. Run `codex login` first.";
 const CODEX_APP_SERVER_PROTOCOL_HELPER_TEXT =

@@ -438,7 +438,7 @@ function registerPrefsPane() {
     pluginID: addon.data.config.addonID,
     id: PREFERENCES_PANE_ID,
     src: `chrome://${addon.data.config.addonRef}/content/preferences.xhtml`,
-    label: "llm-for-zotero",
+    label: addon.data.config.addonName,
     image: `chrome://${addon.data.config.addonRef}/content/icons/icon.svg`,
   });
 }

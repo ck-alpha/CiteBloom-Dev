@@ -336,7 +336,7 @@ export function buildCodexNativeSkillInstructionBlock(
   const matchedSkills = allSkills.filter((skill) => activeIds.has(skill.id));
   if (!matchedSkills.length) return "";
   return [
-    "LLM-for-Zotero skills active for this turn:",
+    "CiteBloom skills active for this turn:",
     "The following skill instructions are provided because the user's message matches these workflows. Use them as workflow guidance for Zotero MCP tools; do not treat skills as additional MCP tools.",
     ...matchedSkills.map((skill) =>
       [

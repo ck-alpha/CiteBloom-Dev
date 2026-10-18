@@ -994,7 +994,7 @@ Create a pure service:
 
 ```ts
 class RankingService {
-  async rank(input: RankingInput): Promise<RankingResult>
+  async rank(input: RankingInput): Promise<RankingResult>;
 }
 ```
 

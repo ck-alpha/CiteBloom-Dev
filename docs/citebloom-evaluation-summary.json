@@ -1,0 +1,250 @@
+{
+  "status": "REAL-DATA OFFLINE EVAL",
+  "executedAt": "2026-10-18T03:00:34.569Z",
+  "environment": {
+    "node": "v24.20.0",
+    "platform": "linux",
+    "arch": "x64",
+    "cpu": "INTEL(R) XEON(R) GOLD 6530",
+    "logicalCpus": 16
+  },
+  "implementationSha256": "cd972fec7ead81430a7e2479de4ee7a02aaf2a9e2a301d5d52c1ea0a0945c872",
+  "data": {
+    "schemaVersion": 1,
+    "dataset": "citeulike-a",
+    "source": "https://github.com/js05212/citeulike-a",
+    "upstreamCommit": "91b603922d7f2d3db18071d4798bf78c9c5d1680",
+    "files": [
+      {
+        "name": "README.md",
+        "url": "https://raw.githubusercontent.com/js05212/citeulike-a/91b603922d7f2d3db18071d4798bf78c9c5d1680/README.md",
+        "bytes": 3141,
+        "sha256": "733c83b5a7dfc2183a9fbbc085c2dc4d8b07f2e74898f3f996dc9ce2cf201259",
+        "downloadedAt": "2026-10-18T02:50:51.342Z",
+        "decoding": {
+          "encoding": "utf-8",
+          "invalidUtf8": false,
+          "replacementCharacters": 0
+        }
+      },
+      {
+        "name": "users.dat",
+        "url": "https://raw.githubusercontent.com/js05212/citeulike-a/91b603922d7f2d3db18071d4798bf78c9c5d1680/users.dat",
+        "bytes": 1094785,
+        "sha256": "53211d82c14ff261e595634d285ed9fbf8049cf81dcb751d924d695b9612a02c",
+        "downloadedAt": "2026-10-18T02:50:52.456Z",
+        "decoding": {
+          "encoding": "utf-8",
+          "invalidUtf8": false,
+          "replacementCharacters": 0
+        }
+      },
+      {
+        "name": "raw-data.csv",
+        "url": "https://raw.githubusercontent.com/js05212/citeulike-a/91b603922d7f2d3db18071d4798bf78c9c5d1680/raw-data.csv",
+        "bytes": 23719886,
+        "sha256": "10b7a15ac2f7f1e03c6c8229c1398b716b89edfd199dbbdb7be547345d51c50f",
+        "downloadedAt": "2026-10-18T02:51:28.910Z",
+        "decoding": {
+          "encoding": "utf-8",
+          "invalidUtf8": true,
+          "replacementCharacters": 82224
+        }
+      },
+      {
+        "name": "item-tag.dat",
+        "url": "https://raw.githubusercontent.com/js05212/citeulike-a/91b603922d7f2d3db18071d4798bf78c9c5d1680/item-tag.dat",
+        "bytes": 1423307,
+        "sha256": "0f7b432796a5038ed2631c02b99d70e636123673afc11bf9e051de5b49467890",
+        "downloadedAt": "2026-10-18T02:51:32.456Z",
+        "decoding": {
+          "encoding": "utf-8",
+          "invalidUtf8": false,
+          "replacementCharacters": 0
+        }
+      },
+      {
+        "name": "tags.dat",
+        "url": "https://raw.githubusercontent.com/js05212/citeulike-a/91b603922d7f2d3db18071d4798bf78c9c5d1680/tags.dat",
+        "bytes": 628894,
+        "sha256": "c02b3e5ee1a57f88f3a598b2040018bb198f54cd0c11116fa7a0db905b6f60e3",
+        "downloadedAt": "2026-10-18T02:51:33.782Z",
+        "decoding": {
+          "encoding": "utf-8",
+          "invalidUtf8": false,
+          "replacementCharacters": 0
+        }
+      }
+    ],
+    "licenseReview": {
+      "status": "NO_EXPLICIT_LICENSE_FOUND_DO_NOT_REDISTRIBUTE",
+      "reviewedAt": "2026-10-18T02:50:50.742Z",
+      "treeUrl": "https://api.github.com/repos/js05212/citeulike-a/git/trees/91b603922d7f2d3db18071d4798bf78c9c5d1680",
+      "rootFiles": [
+        "README.md",
+        "citations.dat",
+        "item-tag.dat",
+        "mult.dat",
+        "raw-data.csv",
+        "tags.dat",
+        "users.dat",
+        "vocabulary.dat"
+      ],
+      "note": "Pinned root has no LICENSE/COPYING/NOTICE. README attributes CiteULike, Google Scholar and Wang/Blei, and links historical CiteULike terms; no affirmative redistribution grant verified. Local research cache only; do not publish raw data, excerpts or interaction arrays."
+    }
+  },
+  "result": {
+    "protocol": "ORACLE / FIXED-POOL RANKING EVAL; random interaction holdout; implicit-positive proxies",
+    "retrieval": "RETRIEVAL NOT EVALUATED",
+    "provider": "MOCK PROVIDER: local CiteULike-a; openalex type only; zero API calls",
+    "pipelineVersion": 1,
+    "config": {
+      "seed": 20261018,
+      "users": 100,
+      "unlabeled": 200,
+      "minInteractions": 10,
+      "testFraction": 0.2,
+      "topK": 5
+    },
+    "sourceDiagnostics": {
+      "filesWithInvalidUtf8": 1,
+      "replacementCharacters": 82224,
+      "metadataRows": 16980,
+      "itemTagRows": 16980,
+      "tagRows": 46391,
+      "userRows": 5551,
+      "interactions": 204986,
+      "rawInteractions": 204986,
+      "duplicateInteractionsRemoved": 0,
+      "duplicateTagIdsRemoved": 0,
+      "parseSuccessRate": 1,
+      "missingAbstractRate": 0,
+      "missingTagsRate": 0.20382803297997645,
+      "missingDoiRate": 1,
+      "missingPublicationTimeRate": 1,
+      "missingInteractionTimeRate": 1,
+      "missingAuthorRate": 1
+    },
+    "sample": {
+      "eligibleUsers": 5551,
+      "evaluatedUsers": 100,
+      "eligibleUserRate": 1,
+      "evaluatedEligibleUserRate": 0.01801477211313277,
+      "processedInteractions": 4219,
+      "trainingInteractions": 3413,
+      "heldOutInteractions": 806,
+      "sampledDistinctItems": 3529,
+      "poolCount": 100,
+      "totalPoolItems": 20806,
+      "poolSizeMin": 202,
+      "poolSizeMax": 266,
+      "poolSizeMean": 208.06,
+      "pooledPositiveFraction": 0.03873882533884456,
+      "macroPositiveFraction": 0.03689352495358121,
+      "heldOutInPoolCoverage": 1,
+      "conditionalRelevantCount": 806,
+      "profilesWithoutTopics": 1,
+      "seedDoiRouteCoverage": 0,
+      "graphRouteCoverage": 0,
+      "semanticFallbackRankingCalls": 300,
+      "failedUsers": 0,
+      "skippedEligibleUsers": 5451
+    },
+    "audit": {
+      "trainTestOverlap": 0,
+      "trainPoolOverlap": 0,
+      "duplicateCandidateIds": 0,
+      "baselineSamePool": true,
+      "popularityTrainingInteractionsOnly": true,
+      "noTestFeedback": true,
+      "splitSha256": "8544743a0a66b99f09fe79485bfbb6080dc37d9ce2a6ac8cf332e99b9d903474",
+      "poolsSha256": "e887205bc4c197b16cc32abf5d3ec283b57a41abc3adfbefdacec20bfc0a9229",
+      "rankedOutputsSha256": "655efff52373feff4bf8de0a69503992c7f84b6fb749570d5a0782ed07b2f701"
+    },
+    "methods": {
+      "Popularity": {
+        "precisionAtK": 0.09800000000000003,
+        "recallAtK": 0.0654638170700277,
+        "mrr": 0.17483333333333334,
+        "ndcgAtK": 0.10358686604913689,
+        "diversityScore": 0.9104441235323584,
+        "noveltyRate": 1,
+        "rejectedAtK": 0,
+        "evidenceAvailability": 1,
+        "evidenceCoverage": 0.5256897210826551,
+        "reasonGroundingRate": 0.8379999999999996,
+        "unsupportedExplanationCount": 0
+      },
+      "Content / Lexical": {
+        "precisionAtK": 0.352,
+        "recallAtK": 0.3252876842206937,
+        "mrr": 0.6431666666666667,
+        "ndcgAtK": 0.4687074363889564,
+        "diversityScore": 0.8899920709092513,
+        "noveltyRate": 1,
+        "rejectedAtK": 0,
+        "evidenceAvailability": 1,
+        "evidenceCoverage": 0.4511072620845966,
+        "reasonGroundingRate": 0.99,
+        "unsupportedExplanationCount": 0
+      },
+      "CiteBloom Full (Offline)": {
+        "precisionAtK": 0.3479999999999999,
+        "recallAtK": 0.32821030326831263,
+        "mrr": 0.6485000000000001,
+        "ndcgAtK": 0.46564415198841613,
+        "diversityScore": 0.8947110881747129,
+        "noveltyRate": 1,
+        "rejectedAtK": 0,
+        "evidenceAvailability": 1,
+        "evidenceCoverage": 0.4492517819448299,
+        "reasonGroundingRate": 0.99,
+        "unsupportedExplanationCount": 0
+      },
+      "CiteBloom lambda=1": {
+        "precisionAtK": 0.352,
+        "recallAtK": 0.3252876842206937,
+        "mrr": 0.6431666666666667,
+        "ndcgAtK": 0.4687074363889564,
+        "diversityScore": 0.8899920709092513,
+        "noveltyRate": 1,
+        "rejectedAtK": 0,
+        "evidenceAvailability": 1,
+        "evidenceCoverage": 0.4511072620845966,
+        "reasonGroundingRate": 0.99,
+        "unsupportedExplanationCount": 0
+      }
+    },
+    "timing": {
+      "wallClockMs": 162147.89628699998,
+      "rankingOnlyMs": {
+        "Popularity": {
+          "observations": 100,
+          "mean": 12.64870155000091,
+          "p95": 16.011586000000534
+        },
+        "Content / Lexical": {
+          "observations": 100,
+          "mean": 512.0188116899994,
+          "p95": 564.8376829999906
+        },
+        "CiteBloom Full (Offline)": {
+          "observations": 100,
+          "mean": 511.62990918999975,
+          "p95": 562.7857709999953
+        },
+        "CiteBloom lambda=1": {
+          "observations": 100,
+          "mean": 510.8530038000001,
+          "p95": 562.8541740000073
+        }
+      }
+    }
+  },
+  "determinism": {
+    "checked": true,
+    "equal": true,
+    "stableSha256": "6a909114968e5f5d54f5383801d036a434edd48faa7d039caef594c6ad37f972",
+    "replayWallClockMs": 163273.687329
+  }
+}

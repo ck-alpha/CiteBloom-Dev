@@ -16,6 +16,7 @@ export default defineConfig({
   source: ["src", "addon"],
   dist: ".scaffold/build",
   name: pkg.config.addonName,
+  xpiName: "citebloom",
   id: pkg.config.addonID,
   namespace: pkg.config.addonRef,
   updateURL: `https://github.com/{{owner}}/{{repo}}/releases/download/release/${
@@ -75,6 +76,13 @@ export default defineConfig({
         }
       : {}),
     hooks: {
+      "test:init": (ctx) => {
+        // The host-test wrapper requires an existing desktop. Prevent scaffold
+        // from installing Xvfb or desktop libraries automatically in CI.
+        if (process.env.CITEBLOOM_EXISTING_DESKTOP === "1") {
+          ctx.test.headless = false;
+        }
+      },
       "test:bundleTests": () => patchGeneratedWorkflowTestReporter(),
     },
     waitForPlugin: `() => Zotero.${pkg.config.addonInstance}.data.initialized`,

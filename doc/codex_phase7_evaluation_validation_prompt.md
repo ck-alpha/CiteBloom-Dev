@@ -4,7 +4,7 @@
 
 Repository:
 
-``` text
+```text
 https://github.com/ck-alpha/zotero-research-agent
 ```
 
@@ -12,20 +12,20 @@ Start from the latest remote `main` after Phase 6 completion.
 
 Before coding, read:
 
-``` text
+```text
 docs/research_agent_architecture_baseline.md
 docs/development-log.md
 ```
 
 Inspect:
 
-``` text
+```text
 src/recommendation/
 src/agent/tools/recommendation/
 test/recommendation*.test.ts
 ```
 
-------------------------------------------------------------------------
+---
 
 # 1. Phase 7 Goal
 
@@ -57,35 +57,35 @@ The goal is not to improve ranking algorithms yet.
 
 The goal is to establish measurement capability.
 
-------------------------------------------------------------------------
+---
 
 # 2. Scope Boundary
 
 ## Implement
 
--   Recommendation evaluation contracts.
--   Offline deterministic evaluation fixtures.
--   Ranking/evidence quality metrics.
--   Recommendation trace inspection.
--   Host validation workflow documentation.
--   Latency and failure diagnostics.
--   Regression evaluation suite.
--   Development documentation.
+- Recommendation evaluation contracts.
+- Offline deterministic evaluation fixtures.
+- Ranking/evidence quality metrics.
+- Recommendation trace inspection.
+- Host validation workflow documentation.
+- Latency and failure diagnostics.
+- Regression evaluation suite.
+- Development documentation.
 
 ## Do NOT implement
 
--   New ranking algorithms.
--   Learning-to-rank.
--   Automatic model training.
--   User-facing UI.
--   Scheduler/Digest.
--   Cross-device sync.
--   Vector database.
--   Multi-agent workflow.
--   Automatic Zotero import.
--   Production analytics service.
+- New ranking algorithms.
+- Learning-to-rank.
+- Automatic model training.
+- User-facing UI.
+- Scheduler/Digest.
+- Cross-device sync.
+- Vector database.
+- Multi-agent workflow.
+- Automatic Zotero import.
+- Production analytics service.
 
-------------------------------------------------------------------------
+---
 
 # 3. Current Architecture Must Remain
 
@@ -115,26 +115,26 @@ Evaluation must observe these layers.
 
 It must not merge responsibilities.
 
-------------------------------------------------------------------------
+---
 
 # 4. Evaluation Module
 
 Create:
 
-``` text
+```text
 src/recommendation/evaluation/
 ```
 
 Suggested:
 
-``` text
+```text
 contracts.ts
 metrics.ts
 evaluationRunner.ts
 traceFormatter.ts
 ```
 
-------------------------------------------------------------------------
+---
 
 # 5. Evaluation Contract
 
@@ -142,7 +142,7 @@ Introduce deterministic contracts.
 
 Conceptually:
 
-``` ts
+```ts
 interface RecommendationEvaluationCase {
   id: string;
 
@@ -158,7 +158,7 @@ interface RecommendationEvaluationCase {
 
 Result:
 
-``` ts
+```ts
 interface RecommendationEvaluationResult {
   caseId: string;
 
@@ -173,12 +173,12 @@ interface RecommendationEvaluationResult {
 
 Requirements:
 
--   serializable;
--   deterministic;
--   no runtime state;
--   no Zotero dependency.
+- serializable;
+- deterministic;
+- no runtime state;
+- no Zotero dependency.
 
-------------------------------------------------------------------------
+---
 
 # 6. Ranking Metrics
 
@@ -186,7 +186,7 @@ Implement lightweight offline metrics.
 
 Required:
 
-``` text
+```text
 Precision@K
 Recall@K
 MRR
@@ -199,13 +199,13 @@ Do not claim scientific validity.
 
 These are engineering regression indicators.
 
-------------------------------------------------------------------------
+---
 
 # 7. Evidence Metrics
 
 Evaluate:
 
-``` text
+```text
 evidence availability
 evidence coverage
 reason grounding rate
@@ -222,13 +222,13 @@ A recommendation explanation is valid only when:
     AND
     reason is generated from supplied evidence
 
-------------------------------------------------------------------------
+---
 
 # 8. Deterministic Benchmark Fixtures
 
 Create:
 
-``` text
+```text
 test/evaluation/
 ```
 
@@ -251,7 +251,7 @@ Expected:
 
     A ranks above B
 
-------------------------------------------------------------------------
+---
 
 ## Case B
 
@@ -268,7 +268,7 @@ Expected:
 
     compatibility penalty applied
 
-------------------------------------------------------------------------
+---
 
 ## Case C
 
@@ -284,7 +284,7 @@ Expected:
     warning generated
     no hallucinated reason
 
-------------------------------------------------------------------------
+---
 
 # 9. Trace Inspection
 
@@ -292,7 +292,7 @@ Add deterministic trace output.
 
 Example:
 
-``` text
+```text
 Recommendation Trace
 
 Candidate:
@@ -315,12 +315,12 @@ supported by evidenceRefs
 
 Requirements:
 
--   debugging only;
--   not exposed as user UI;
--   no hidden reasoning;
--   no chain-of-thought.
+- debugging only;
+- not exposed as user UI;
+- no hidden reasoning;
+- no chain-of-thought.
 
-------------------------------------------------------------------------
+---
 
 # 10. Latency Measurement
 
@@ -328,7 +328,7 @@ Add internal diagnostics:
 
 Measure:
 
-``` text
+```text
 candidate discovery time
 ranking time
 evidence retrieval time
@@ -339,18 +339,18 @@ Do not optimize yet.
 
 Only record:
 
--   duration;
--   timeout;
--   fallback;
--   failure code.
+- duration;
+- timeout;
+- fallback;
+- failure code.
 
-------------------------------------------------------------------------
+---
 
 # 11. Host Validation
 
 Create:
 
-``` text
+```text
 docs/phase7-host-validation.md
 ```
 
@@ -380,7 +380,7 @@ Verify:
     library scope isolation
     profile separation
 
-------------------------------------------------------------------------
+---
 
 # 12. Real Provider Smoke Boundary
 
@@ -402,7 +402,7 @@ These are validation tasks.
 
 Do not make tests depend on external services.
 
-------------------------------------------------------------------------
+---
 
 # 13. Tests
 
@@ -410,16 +410,16 @@ Add:
 
 ## Evaluation
 
--   metric correctness;
--   deterministic ordering;
--   empty input handling;
--   invalid result handling.
+- metric correctness;
+- deterministic ordering;
+- empty input handling;
+- invalid result handling.
 
 ## Regression
 
 Ensure existing:
 
-``` text
+```text
 Profile
 Candidate Discovery
 Ranking
@@ -431,7 +431,7 @@ tests remain unchanged.
 
 Run:
 
-``` bash
+```bash
 npm run typecheck
 npm run test:unit
 npm run build
@@ -439,66 +439,66 @@ npm run check:cycles
 git diff --check
 ```
 
-------------------------------------------------------------------------
+---
 
 # 14. Documentation Update
 
 Update:
 
-``` text
+```text
 docs/research_agent_architecture_baseline.md
 docs/development-log.md
 ```
 
 Record:
 
--   evaluation architecture;
--   metrics;
--   validation results;
--   known limitations.
+- evaluation architecture;
+- metrics;
+- validation results;
+- known limitations.
 
-------------------------------------------------------------------------
+---
 
 # 15. Red-Line Review
 
 Confirm:
 
--   no ranking algorithm change;
--   no LLM ranking;
--   no automatic feedback optimization;
--   no user tracking;
--   no external analytics;
--   no UI;
--   no scheduler;
--   no vector database;
--   no Zotero write operations.
+- no ranking algorithm change;
+- no LLM ranking;
+- no automatic feedback optimization;
+- no user tracking;
+- no external analytics;
+- no UI;
+- no scheduler;
+- no vector database;
+- no Zotero write operations.
 
-------------------------------------------------------------------------
+---
 
 # 16. Git Delivery
 
 Commit:
 
-``` text
+```text
 feat(recommendation): add evaluation and validation framework
 ```
 
 Tag:
 
-``` text
+```text
 phase-7
 ```
 
 Push:
 
-``` bash
+```bash
 git push origin main
 git push origin phase-7
 ```
 
 Do not force push.
 
-------------------------------------------------------------------------
+---
 
 # 17. Final Report
 
@@ -506,20 +506,20 @@ Provide:
 
 ## Git
 
--   start commit
--   end commit
--   tag
+- start commit
+- end commit
+- tag
 
 ## Evaluation
 
--   metrics implemented
--   benchmark cases
--   results
+- metrics implemented
+- benchmark cases
+- results
 
 ## Validation
 
--   host validation status
--   external provider smoke status
+- host validation status
+- external provider smoke status
 
 ## Tests
 
@@ -529,7 +529,7 @@ Actual commands and outputs.
 
 Only list remaining issues.
 
-------------------------------------------------------------------------
+---
 
 # Completion Criteria
 

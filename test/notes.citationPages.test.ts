@@ -39,6 +39,27 @@ describe("notes citation page export", function () {
       originalZotero;
   });
 
+  it("exports one CiteBloom footer while accepting legacy and current attribution", function () {
+    const messages: Message[] = [
+      { role: "user", text: "Summarize.", timestamp: 1 },
+      {
+        role: "assistant",
+        text: "Legacy answer.\n\n---\n\nWritten by LLM-for-Zotero plugin.",
+        timestamp: 2,
+      },
+      {
+        role: "assistant",
+        text: "Current answer.\n\n---\n\nWritten by CiteBloom.",
+        timestamp: 3,
+      },
+    ];
+    const result = buildChatHistoryNotePayload(messages);
+    assert.include(result.noteHtml, "Legacy answer.");
+    assert.include(result.noteHtml, "Current answer.");
+    assert.notInclude(result.noteHtml, "Written by LLM-for-Zotero");
+    assert.lengthOf(result.noteHtml.match(/Written by CiteBloom\./g) || [], 1);
+  });
+
   it("writes the corrected cached page into saved chat-history notes", function () {
     const quote =
       "We choose Hebbian learning, not only for its biological plausibility, but to also allow rapid learning when entering a new environment.";

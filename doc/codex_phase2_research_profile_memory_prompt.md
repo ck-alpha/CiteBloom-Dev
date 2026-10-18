@@ -321,7 +321,7 @@ The production adapter must preserve the existing Phase 1 contract:
 ### load
 
 ```ts
-load(profileId)
+load(profileId);
 ```
 
 returns:
@@ -332,7 +332,7 @@ returns:
 ### save create
 
 ```ts
-save(profile, null)
+save(profile, null);
 ```
 
 must only create:
@@ -346,7 +346,7 @@ and must reject if the profile already exists.
 ### save update
 
 ```ts
-save(profile, expectedVersion)
+save(profile, expectedVersion);
 ```
 
 must require:

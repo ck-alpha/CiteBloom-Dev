@@ -1,115 +1,131 @@
-name: Plugin Quality
+name: CiteBloom Quality
 
 on:
   workflow_call:
+    inputs:
+      run_host_tests:
+        description: Run the full host suite on a prepared desktop runner
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   lint:
-    name: Lint
+    name: Offline lint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Run lint
-        run: npm run lint:check
+      - run: npm ci
+      - run: npm run lint:check
 
   typecheck:
-    name: Typecheck
+    name: Offline typecheck and cycles
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Run typecheck
-        run: npm run typecheck
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run eval:citebloom:typecheck
+      - run: npm run check:cycles
 
   unit:
-    name: Unit tests
+    name: Offline unit and SQLite contracts
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Run unit tests
-        run: npm run test:unit
+      - run: npm ci
+      - run: npm run test:unit
 
-  workflow:
-    name: Workflow tests
+  evaluation-fixtures:
+    name: Offline parser, metrics and leakage fixtures
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Run workflow tests
-        run: npm run test:workflow
+      - run: npm ci
+      # Original small synthetic fixtures only: no external dataset download.
+      - run: npm run test:eval:citebloom
+      - run: npm run test:feedback:sqlite
 
   build:
-    name: Build
+    name: Offline build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Build plugin
-        run: npm run build
-      - name: Upload build result
-        uses: actions/upload-artifact@v4
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
         with:
-          name: build-result
+          name: citebloom-build
           path: .scaffold/build
 
-  full-test:
-    name: Full npm test gate
-    needs:
-      - lint
-      - typecheck
-      - unit
-      - workflow
-      - build
+  offline-gate:
+    name: Offline required gate
+    if: always()
+    needs: [lint, typecheck, unit, evaluation-fixtures, build]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Require every offline check to pass
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          node -e 'const jobs=JSON.parse(process.env.RESULTS); for(const [name,job] of Object.entries(jobs)){console.log(`${name}: ${job.result}`); if(job.result!=="success") process.exitCode=1;}'
+
+  host-status:
+    name: Zotero host validation status
+    runs-on: ubuntu-latest
+    steps:
+      - name: Expose the separate host requirement
+        env:
+          REQUESTED: ${{ inputs.run_host_tests }}
+        run: |
+          if [ "$REQUESTED" = "true" ]; then
+            echo "Host validation requested. Check the separate Zotero host integration job result." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::ZOTERO HOST E2E NOT EXECUTED. Host tests require a manual dispatch and a provisioned citebloom-zotero desktop runner."
+            echo "ZOTERO HOST E2E: NOT EXECUTED. The host integration job is skipped; offline green does not validate the plugin host." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "Previous host failure: collection delete and cleanup each timed out at 120s in run 34423048197. Not yet verified fixed; see docs/citebloom-ci-diagnostics.md." >> "$GITHUB_STEP_SUMMARY"
+
+  workflow:
+    name: Zotero host integration (manual desktop)
+    # Never execute untrusted pull requests on a desktop runner.
+    if: inputs.run_host_tests && github.event_name == 'workflow_dispatch'
+    runs-on: [self-hosted, citebloom-zotero]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Run complete test script
-        run: npm test
+      - run: npm ci
+      - name: Run all retained host cases on the existing desktop
+        run: npm run test:workflow
+      - name: Record actual host result
+        if: always()
+        shell: bash
+        env:
+          RESULT: ${{ job.status }}
+        run: echo "Zotero host integration result = $RESULT. This job does not run a live LLM." >> "$GITHUB_STEP_SUMMARY"

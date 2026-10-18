@@ -38,3 +38,8 @@ AGENTS.md
 /docs/claude-code-mode-user-guide.md
 /docs/claude-code-mode-user-guide.zh-CN.md
 /docs/assets/claude-code-mode-user-guide/
+
+# CiteBloom public delivery docs; external datasets and local run artifacts stay local.
+!/docs/citebloom-*.md
+!/docs/citebloom-evaluation-summary.json
+/data/

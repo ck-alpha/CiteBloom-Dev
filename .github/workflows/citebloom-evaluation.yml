@@ -1,0 +1,42 @@
+name: CiteBloom real-data offline evaluation (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  historical-interactions:
+    name: CiteULike fixed-pool ranking (not host E2E)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Run original synthetic regression before external data
+        run: npm run test:eval:citebloom
+      - name: Explicit bounded dataset download and license manifest
+        run: |
+          mkdir -p data/evaluation
+          npm --silent run eval:citebloom:prepare -- --dataset citeulike-a --seed 20261018 --timeout-ms 120000 --retries 2 --max-bytes 41943040 > data/evaluation/preparation.json
+      - name: Run production ranking and verify deterministic replay from cache
+        run: npm run eval:citebloom:run -- --dataset citeulike-a --seed 20261018 --users 100 --unlabeled 200 --verify-determinism --output data/evaluation/medium.json
+      - name: Generate aggregate report
+        run: npm run eval:citebloom:report -- --input data/evaluation/medium.json --output data/evaluation/medium.md
+      - name: Publish aggregate results in job summary
+        run: cat data/evaluation/medium.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload aggregate metrics, hashes and license review only
+        uses: actions/upload-artifact@v4
+        with:
+          name: citebloom-offline-evaluation-aggregates
+          # Never upload data/raw, source metadata, text snippets or interactions.
+          path: |
+            data/evaluation/preparation.json
+            data/evaluation/medium.json
+            data/evaluation/medium.md
+          if-no-files-found: error

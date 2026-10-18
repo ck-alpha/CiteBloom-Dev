@@ -503,18 +503,18 @@ Add:
 
 Use a table:
 
-| Component | Status |
-|---|---|
-| Research Profile | Implemented |
-| Candidate Discovery | Implemented |
-| Ranking/MMR | Implemented |
-| Feedback Learning | Implemented |
-| Evidence Grounding | Implemented |
-| Evaluation Framework | Implemented |
-| Research Intelligence Skill | Implemented |
-| Scheduler | Not implemented |
+| Component                   | Status          |
+| --------------------------- | --------------- |
+| Research Profile            | Implemented     |
+| Candidate Discovery         | Implemented     |
+| Ranking/MMR                 | Implemented     |
+| Feedback Learning           | Implemented     |
+| Evidence Grounding          | Implemented     |
+| Evaluation Framework        | Implemented     |
+| Research Intelligence Skill | Implemented     |
+| Scheduler                   | Not implemented |
 | Dedicated Recommendation UI | Not implemented |
-| Cross-device Sync | Not implemented |
+| Cross-device Sync           | Not implemented |
 
 Keep it honest.
 

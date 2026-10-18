@@ -1,10 +1,7 @@
 import { assert } from "chai";
 import { BUILTIN_SKILL_FILES } from "../src/agent/skills";
 import { patchSkillFrontmatter } from "../src/agent/skills/frontmatterPatcher";
-import {
-  hashSkillForUpgrade,
-  spliceManagedBlock,
-} from "../src/agent/skills/managedBlock";
+import { hashSkillForUpgrade } from "../src/agent/skills/managedBlock";
 import { parseSkill } from "../src/agent/skills/skillLoader";
 import {
   getCanonicalSkillFilePath,
@@ -359,10 +356,9 @@ describe("user skill bootstrap upgrades", function () {
     const shipped = BUILTIN_SKILL_FILES["write-note.md"];
     // Simulate a user on an older shipped managed block who appended a
     // customization section after MANAGED-END (the supported flow).
-    const oldManagedOnDisk = spliceManagedBlock(
-      shipped,
-      "\nOLD MANAGED CONTENT — previous shipped version.\n",
-    );
+    const oldManagedOnDisk = shipped
+      .replace("version: 10", "version: 9")
+      .replaceAll("Written by CiteBloom.", "Written by LLM-for-Zotero.");
     assert.isString(oldManagedOnDisk);
     const customization =
       "\n\n## Your customizations\n\nPath pattern: `{papertitle}/{papertitle}.md`\n";
@@ -386,15 +382,57 @@ describe("user skill bootstrap upgrades", function () {
     await initUserSkills();
 
     const canonicalWriteNote = files[writeNotePath];
-    assert.notInclude(canonicalWriteNote, "OLD MANAGED CONTENT");
+    assert.notInclude(canonicalWriteNote, "Written by LLM-for-Zotero.");
+    assert.include(canonicalWriteNote, "Written by CiteBloom.");
     assert.include(canonicalWriteNote, "USER CUSTOMIZATIONS COME FIRST.");
     assert.include(canonicalWriteNote, "## Your customizations");
     assert.include(
       canonicalWriteNote,
       "Path pattern: `{papertitle}/{papertitle}.md`",
     );
-    // Tracks the shipped write-note version; bumped to 9 when the skill's
-    // "folder means filesystem" guidance was corrected for issue #374.
-    assert.equal(parseSkill(canonicalWriteNote).version, 9);
+    // Only the stock generated-note attribution changes; identity is stable.
+    assert.equal(parseSkill(canonicalWriteNote).version, 10);
+  });
+  it("upgrades only exact stock note templates and preserves customized bodies", async function () {
+    const shipped = BUILTIN_SKILL_FILES["write-note.md"];
+    const oldStock = shipped
+      .replace("version: 10", "version: 9")
+      .replaceAll("Written by CiteBloom.", "Written by LLM-for-Zotero.");
+    for (const tracked of [false, true]) {
+      for (const customized of [false, true]) {
+        const baseDir = `/tmp/citebloom-note-upgrade-${tracked}-${customized}`;
+        installMockSkillEnvironment(baseDir, {}, new Map<string, string>());
+        const path = getCanonicalSkillFilePath("write-note");
+        const onDisk = customized
+          ? oldStock.replace(
+              "## Write Note",
+              "## Write Note\n\nKeep my personal workflow.",
+            )
+          : oldStock;
+        const files = { [path]: onDisk };
+        const prefs = new Map<string, string>();
+        if (tracked) {
+          prefs.set(
+            BODY_HASH_PREF_KEY,
+            JSON.stringify({
+              "write-note.md": hashSkillForUpgrade(
+                onDisk,
+                parseSkill(onDisk).instruction,
+              ),
+            }),
+          );
+        }
+        installMockSkillEnvironment(baseDir, files, prefs);
+        await initUserSkills();
+        if (customized) {
+          assert.include(files[path], "Keep my personal workflow.");
+          assert.include(files[path], "Written by LLM-for-Zotero.");
+          assert.notInclude(files[path], "Written by CiteBloom.");
+        } else {
+          assert.include(files[path], "Written by CiteBloom.");
+          assert.notInclude(files[path], "Written by LLM-for-Zotero.");
+        }
+      }
+    }
   });
 });

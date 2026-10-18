@@ -1,4 +1,5 @@
-> Archived usage guide from this fork before the README redesign (2026-09-10).
+> Archived llm-for-zotero usage guide from before the README redesign (2026-09-10).
+> The current project is CiteBloom; see the [rename and compatibility record](../docs/citebloom-rename-and-compatibility.md).
 > Backend instructions, screenshots, release links and credits below describe the
 > inherited plugin. For the current project, build instructions and validation
 > boundaries, see the [project README](../README.md). Upstream releases do not

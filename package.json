@@ -1,10 +1,10 @@
 {
-  "name": "llm-for-zotero",
+  "name": "citebloom",
   "type": "module",
   "version": "3.9.5",
-  "description": "AI research agent rooted in your Zotero library",
+  "description": "Personalized Research Discovery Agent for Zotero",
   "config": {
-    "addonName": "llm-for-zotero",
+    "addonName": "CiteBloom",
     "addonID": "zotero-llm@github.com.yilewang",
     "addonRef": "llmforzotero",
     "addonInstance": "LLMForZotero",
@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yilewang/llm-for-zotero.git"
+    "url": "git+https://github.com/ck-alpha/CiteBloom.git"
   },
   "author": "Yile Wang",
   "bugs": {
-    "url": "https://github.com/yilewang/llm-for-zotero/issues"
+    "url": "https://github.com/ck-alpha/CiteBloom/issues"
   },
-  "homepage": "https://github.com/yilewang/llm-for-zotero#readme",
+  "homepage": "https://github.com/ck-alpha/CiteBloom#readme",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",
@@ -34,7 +34,15 @@
     "test:workflow": "node scripts/run-workflow-tests.mjs",
     "test:webchat:live": "node scripts/run-workflow-tests.mjs --webchat-live",
     "update-deps": "npm update --save",
-    "test:agent:live": "node scripts/run-workflow-tests.mjs --agent-live"
+    "test:agent:live": "node scripts/run-workflow-tests.mjs --agent-live",
+    "eval:citebloom:prepare": "node --use-env-proxy --use-system-ca --import tsx scripts/evaluation/cli.ts prepare",
+    "eval:citebloom:run": "tsx scripts/evaluation/cli.ts run",
+    "eval:citebloom:report": "tsx scripts/evaluation/cli.ts report",
+    "eval:citebloom:typecheck": "tsc --noEmit -p scripts/evaluation/tsconfig.json",
+    "eval:citebloom:openalex": "node --use-env-proxy --use-system-ca scripts/openalex-smoke.mjs",
+    "test:offline": "npm run typecheck && npm run test:unit && npm run check:cycles",
+    "test:feedback:sqlite": "npx tsx node_modules/mocha/bin/mocha.js --require ./test/register.cjs test/recommendationFeedbackSqliteLifecycle.test.ts",
+    "test:eval:citebloom": "tsx node_modules/mocha/bin/mocha.js --require ./test/register.cjs test/citebloomOfflineEvaluation.test.ts"
   },
   "dependencies": {
     "fflate": "^0.8.2",

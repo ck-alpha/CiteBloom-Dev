@@ -1,6 +1,9 @@
-# Research Intelligence 工作流评测
+# CiteBloom：Research Intelligence 历史工作流评测
 
-2026-09-09，Phase 8。此处严格区分确定性合同与真实模型行为。
+2026-09-09，Phase 8。此处保留当时的确定性合同结果，不是 2026-10-18 本轮测试统计。
+最新命令和实际结果见 [CiteBloom 评测结果](citebloom-evaluation-results.md) 与
+[交付记录](citebloom-delivery-and-handoff.md)。真实 Zotero / live LLM 仍须按
+[宿主验证计划](citebloom-host-validation-plan.md) 单独验收。
 
 ## 已执行：离线路由与合同
 

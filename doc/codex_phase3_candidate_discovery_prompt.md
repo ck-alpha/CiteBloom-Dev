@@ -386,10 +386,7 @@ Phase 3 需要增加结构化 provenance。
 推荐形式：
 
 ```ts
-type CandidateDiscoveryProvider =
-  | "openalex"
-  | "arxiv"
-  | "europepmc";
+type CandidateDiscoveryProvider = "openalex" | "arxiv" | "europepmc";
 
 type CandidateProvenance =
   | {
@@ -482,7 +479,8 @@ finalScore
 期望：
 
 ```ts
-scores: {}
+scores: {
+}
 ```
 
 Provider 的原始结果顺序放在：
@@ -753,7 +751,7 @@ maxSeeds       = 4
 不要无界：
 
 ```ts
-Promise.all(allQueriesAndSeeds)
+Promise.all(allQueriesAndSeeds);
 ```
 
 推荐：

@@ -1,4 +1,9 @@
-# Research Intelligence：按需推荐演示
+# CiteBloom：Research Intelligence 按需推荐演示
+
+本页是 **scripted / expected** 演示，没有本轮 Zotero 录屏或真实多轮模型验收。
+当前工程结果见 [CiteBloom 实际评测](citebloom-evaluation-results.md)，未来桌面
+验收见 [宿主计划](citebloom-host-validation-plan.md)，品牌兼容边界见
+[更名说明](citebloom-rename-and-compatibility.md)。
 
 Phase 8 将已有推荐链路接入内置 `research-intelligence` Skill。普通用户只需
 自然语言；下列工具名供开发者核对调用记录，无需用户手动输入。
@@ -55,7 +60,7 @@ change-journal 流程。导入请求不额外推断偏好反馈。
 预期在同一推荐对话中再次调用 `research_recommend`，读取更新后的画像。
 检查反馈状态与 profile revision；不要承诺一次反馈必然改变 Top-5，真实顺序
 还取决于候选池。持久化和重启步骤复用
-[Phase 7 宿主验证](phase7-host-validation.md)，不将内存/SQLite 测试当作宿主验收。
+[CiteBloom 宿主验证计划](citebloom-host-validation-plan.md)，不将内存/SQLite 测试当作宿主验收。
 
 ## 5. 证据不足
 

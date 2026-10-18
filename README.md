@@ -1,19 +1,31 @@
-# Zotero Research Intelligence Agent
+# CiteBloom
 
-A personalized research assistant that builds a long-term research profile,
-discovers relevant papers, ranks them with explainable signals, and revises
-preferences through explicit feedback.
+**基于 Zotero 的个性化科研文献发现 Agent**
+
+**Personalized Research Discovery Agent for Zotero**
+
+CiteBloom builds a persistent research profile from your library, discovers and
+ranks papers with traceable evidence, and revises preferences through explicit
+feedback. The **Research Intelligence** module runs in plugin Agent mode.
 
 Built on [Yile Wang’s llm-for-zotero](https://github.com/yilewang/llm-for-zotero).
-This fork adds a Research Intelligence layer to the existing Zotero Agent and
-RAG infrastructure. **Phase 8 is implemented; real Zotero host and live model
-validation remain pending.**
+CiteBloom extends its Zotero UI, Agent runtime and RAG infrastructure; it does not
+claim those inherited foundations as original work. The GitHub repository retains
+the existing history. Package version `3.9.5` is inherited and unchanged; this
+rename does not announce a new release.
 
-[Demo](docs/research-intelligence-demo.md) ·
-[Evaluation](docs/research-intelligence-workflow-eval.md) ·
+[![Offline quality](https://github.com/ck-alpha/CiteBloom/actions/workflows/ci.yml/badge.svg)](https://github.com/ck-alpha/CiteBloom/actions/workflows/ci.yml)
+[![License: AGPL-3.0-or-later](https://img.shields.io/badge/License-AGPL--3.0--or--later-blue)](LICENSE)
+
+[Scripted demo](docs/research-intelligence-demo.md) ·
+[Offline protocol](docs/citebloom-evaluation-protocol.md) ·
+[Actual results](docs/citebloom-evaluation-results.md) ·
+[Host validation](docs/citebloom-host-validation-plan.md) ·
+[Provider / dependency audit](docs/citebloom-provider-and-dependency-audit.md) ·
+[Compatibility](docs/citebloom-rename-and-compatibility.md) ·
+[Delivery / handoff](docs/citebloom-delivery-and-handoff.md) ·
 [Development log](docs/development-log.md) ·
-[Installation](#installation--existing-usage) ·
-[AGPL-3.0-or-later](LICENSE)
+[Installation](#installation--existing-usage)
 
 ## What It Does
 
@@ -160,38 +172,60 @@ feedback cancellation and import behavior.
 
 ## Evaluation Status
 
-### Completed
+Verified on **2026-10-18** using Linux / Node.js 24. The current delivery
+separates what is implemented from what has actually run. The [results record](docs/citebloom-evaluation-results.md) and
+[delivery handoff](docs/citebloom-delivery-and-handoff.md) contain the executed
+commands, exit codes, test totals, data provenance and GitHub Actions links.
 
-Recorded Phase 8 results on **2026-09-09**:
+| Acceptance level        | Current delivery boundary                                                                               |
+| ----------------------- | ------------------------------------------------------------------------------------------------------- |
+| CODE IMPLEMENTED        | Profile, discovery, ranking/MMR, evidence, feedback, Agent tools and Skill                              |
+| UNIT / CONTRACT PASS    | **PASS**: 4,541 passing / 1 existing pending; TypeScript, build and cycle checks exit 0                 |
+| REAL-DATA OFFLINE EVAL  | See actual CiteULike run results; fixed-pool implicit-interaction ranking, with retrieval not evaluated |
+| MOCK PROVIDER E2E       | Deterministic domain/Runtime contracts; scripted providers and models do not validate a live service    |
+| LIVE OPENALEX API SMOKE | **PASS**: HTTP 200, 3 works; separate provider connectivity check, not Agent E2E                        |
+| ZOTERO HOST E2E         | **BLOCKED / NOT EXECUTED: Zotero is not installed on this server**                                      |
+| LIVE LLM AGENT E2E      | **NOT EXECUTED**                                                                                        |
+| LIVE EMBEDDING          | **NOT EXECUTED**; offline evaluation uses lexical fallback                                              |
 
-| Offline check               | Recorded result                                                     |
-| --------------------------- | ------------------------------------------------------------------- |
-| Deterministic routing cases | 49 / 49 passed: 27 positive, 22 non-activation cases                |
-| Explicit Skill invocation   | 3 / 3 passed                                                        |
-| Scripted Runtime contracts  | 3 / 3 passed: recommendation, approved feedback, cancelled feedback |
-| Full unit suite             | 4,522 passing / 1 pre-existing pending                              |
+The CiteULike experiment reuses production `ProfileBuilder`, `RankingService`,
+MMR and metric functions. It compares training-only Popularity, Content / Lexical,
+and CiteBloom Full (Offline), with the available lexical signals and MMR.
+All methods receive the same deterministic candidate pools. Held-out positives
+are explicitly included, so this is **ORACLE / FIXED-POOL RANKING EVAL**,
+**RETRIEVAL NOT EVALUATED**. Non-interactions are unlabeled, not explicit dislike.
+These metrics do not measure live Zotero recommendations, satisfaction or clicks.
 
-The 49 cases exercise regex fallback routing. Expected tool labels are manually
-assigned; Runtime tests use a scripted model. **These results do not measure LLM
-Tool Selection Accuracy, Agent success rate, or hallucination-free answers.**
+The [2026-09-09 workflow record](docs/research-intelligence-workflow-eval.md)
+preserves the historical 49 regex routing cases, 3 scripted Runtime contracts
+and 4,522 passing tests. Those are dated historical results, **not this delivery's
+test count or LLM tool-selection accuracy**. SQLite seams validate persistence
+contracts; they do not replace a real Zotero restart or group-library check.
 
-The offline evaluation framework implements Precision@K, Recall@K, MRR, NDCG@K,
-diversity, novelty and evidence diagnostics. Synthetic fixtures verify formulas
-and contracts; they do not establish real-user recommendation quality or an
-improvement over a baseline. See the
-[workflow evaluation and reproduction commands](docs/research-intelligence-workflow-eval.md)
-and [metric definitions](docs/phase7-host-validation.md#指标约定).
+## Reproduce Without Zotero
 
-### Not Yet Executed
+Use Node.js 24 and run from the repository root after `npm ci`:
 
-- Real Zotero host validation, including restart persistence.
-- Live model workflow evaluation and natural-language multi-turn behavior.
-- OpenAlex live provider validation for this recommendation workflow.
-- Live embedding validation.
-- Group library isolation testing in the real host.
+```sh
+npm run eval:citebloom:prepare -- --dataset citeulike-a --seed 20261018 --timeout-ms 120000
+npm run eval:citebloom:run -- --dataset citeulike-a --seed 20261018 --users 100 --unlabeled 200 --output data/evaluation/medium.json --verify-determinism
+npm run eval:citebloom:report -- --input data/evaluation/medium.json
+npm run test:feedback:sqlite
+npm run eval:citebloom:openalex
+```
 
-The [host validation checklist](docs/phase7-host-validation.md) records these as
-**NOT EXECUTED**. Offline SQLite seams do not replace host validation.
+Preparation is an explicit bounded download, cached outside version control.
+`run` uses only the verified local cache;
+`npm run eval:citebloom:prepare -- --offline` verifies and
+reparses that cache. `--verify-determinism` reruns the benchmark and compares
+results with timing fields excluded.
+Read the [protocol](docs/citebloom-evaluation-protocol.md) for the exact sample,
+cache/offline flags, deterministic rerun, ID alignment, split, denominators and
+license review. Raw data is local only; public availability is not redistribution
+permission. The OpenAlex command is a separate, small live provider smoke. The
+SQLite command checks impression → confirmed feedback → revision → reconnect
+and idempotency using real domain services, without claiming a user study or
+an improvement in held-out scores.
 
 ## Project Status
 
@@ -239,15 +273,15 @@ persistent memory path and are not Zotero item edits or journal undo entries.
 [Yile Wang and the llm-for-zotero contributors](https://github.com/yilewang/llm-for-zotero)
 provide the foundation: Zotero integration and UI, Agent runtime, tool/Skill
 framework, scholarly search adapters, RAG/PDF and MinerU services, provider
-abstraction, confirmation and change journal. This fork reuses that work.
+abstraction, confirmation and change journal. CiteBloom reuses that work; the GitHub fork flag does not change this attribution.
 
 ### Added in This Project
 
 The Research Intelligence work adds the personalized recommendation architecture,
 persistent research profiles, multi-route candidate discovery, deterministic
 ranking and MMR, recommendation impressions, feedback replay and profile revision,
-evidence grounding, offline evaluation, and the `research-intelligence` Skill
-with routing and workflow contract tests. The
+evidence grounding, a reproducible public-interaction offline evaluation, and the
+`research-intelligence` Skill with routing and workflow contract tests. The
 [development log](docs/development-log.md) tracks Phases 1–8 and their boundaries.
 
 ## Repository Structure
@@ -265,37 +299,42 @@ src/
 └─ agent/
    ├─ skills/       # Includes research-intelligence.md
    └─ tools/recommendation/
-test/               # Domain, SQLite, routing and Runtime contracts
+scripts/evaluation/ # Explicit download, parser, adapter and offline CLI
+test/               # Domain, SQLite, dataset, routing and Runtime contracts
 docs/
+├─ citebloom-evaluation-protocol.md
+├─ citebloom-evaluation-results.md
+├─ citebloom-host-validation-plan.md
+├─ citebloom-rename-and-compatibility.md
+├─ citebloom-delivery-and-handoff.md
 ├─ research-intelligence-demo.md
-├─ research-intelligence-workflow-eval.md
-├─ phase7-host-validation.md
-├─ research_agent_architecture_baseline.md
 └─ development-log.md
 ```
 
 ## Installation / Existing Usage
 
-### Build This Fork
+### Build CiteBloom
 
 Use Node.js 24 and npm to reproduce the documented development environment:
 
 ```sh
-git clone https://github.com/ck-alpha/zotero-research-agent.git
-cd zotero-research-agent
+git clone https://github.com/ck-alpha/CiteBloom.git
+cd CiteBloom
 npm ci
 npm run build
 ```
 
-The plugin package is `.scaffold/build/llm-for-zotero.xpi`. Build this fork to try
-the Research Intelligence layer; the inherited upstream release link is not a
-release of this fork’s additions. Package identity and settings still use
-`llm-for-zotero`, including the inherited add-on ID, so this build replaces the
-original plugin rather than installing alongside it.
+The plugin package is `.scaffold/build/citebloom.xpi`. The display name and
+settings pane are CiteBloom. The inherited add-on ID, preference prefix,
+runtime identifiers and SQLite tables remain stable. Installing this build
+replaces the upstream plugin with the same add-on ID; they cannot coexist in
+one Zotero profile. Use a separate test profile and consult the
+[compatibility record](docs/citebloom-rename-and-compatibility.md). Upstream
+release downloads do not include CiteBloom's added recommendation layer.
 
 1. In Zotero, open **Tools → Add-ons → gear icon → Install Add-on From File**,
    select the built `.xpi`, and restart Zotero.
-2. Open **Preferences → llm-for-zotero**, select a provider and enter its base
+2. Open **Preferences → CiteBloom**, select a provider and enter its base
    URL, credentials when required, and model; click **Test Connection**.
 3. Enable Agent Mode in preferences, then toggle **Agent (beta)** in the
    conversation context bar.
@@ -307,16 +346,19 @@ original plugin rather than installing alongside it.
 ### Development Commands
 
 ```sh
-npm run typecheck
-npm run test:unit
-npm run check:cycles
+npm run lint:check
+npm run test:offline
+npm run eval:citebloom:typecheck
 npm run build
 ```
 
 For a Zotero development session, copy [`.env.example`](.env.example) to `.env`,
 set the Zotero binary, development profile and data directory paths, then run
-`npm start`. `npm run test:workflow` requires a configured Zotero host. Live
-checks are opt-in; their setup is documented in the preserved usage guide.
+`npm start`. `npm run test:workflow` and the complete `npm test` require a
+configured Zotero host. The offline CI gate is separate from the visible,
+manual host-integration workflow; skipped host checks do not become PASS.
+Follow the [host plan](docs/citebloom-host-validation-plan.md) for setup and
+remaining validation. Live checks remain opt-in.
 
 ### Existing Plugin Features and Setup
 
@@ -325,7 +367,7 @@ backends remain inherited features. The
 [preserved usage guide](doc/existing-usage.md) retains the previous README’s
 configuration instructions, demos, backend setup, privacy details and credits.
 Its upstream release and support links refer to the original project.
-Alternative backends do not expose this fork’s recommendation tools.
+Alternative backends do not expose CiteBloom’s recommendation tools.
 
 Research-profile extraction may send selected metadata to the configured model;
 discovery sends queries and seed identifiers to the scholarly provider. Optional
@@ -354,6 +396,6 @@ The earlier README also credits
 upload work; those credits and upstream support links remain in the preserved
 guide.
 
-For this fork’s bugs, documentation changes and contributions, use
-[ck-alpha/zotero-research-agent issues](https://github.com/ck-alpha/zotero-research-agent/issues)
+For CiteBloom bugs, documentation changes and contributions, use
+[ck-alpha/CiteBloom issues](https://github.com/ck-alpha/CiteBloom/issues)
 or submit a pull request to this repository.

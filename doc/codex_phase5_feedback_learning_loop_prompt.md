@@ -624,18 +624,21 @@ Inspect the cleanest contract change.
 Preferred options:
 
 ### Option A
+
 Persist:
 
 ```ts
 matchedTopics: {
   id: string;
   label: string;
-}[];
+}
+[];
 ```
 
 inside the recommendation snapshot.
 
 ### Option B
+
 Persist an impression-level topic map.
 
 Do not create duplicated `matchedTopicIds` + `matchedTopics` unless runtime guards enforce consistency.
@@ -787,7 +790,7 @@ Possible patterns:
 
 ```ts
 interface ProfileFeedbackSource {
-  loadForProfile(profileId, now): Promise<FeedbackProfileState>
+  loadForProfile(profileId, now): Promise<FeedbackProfileState>;
 }
 ```
 
@@ -835,7 +838,7 @@ Create a service conceptually:
 
 ```ts
 class RecommendationFeedbackService {
-  submit(input): Promise<FeedbackResult>
+  submit(input): Promise<FeedbackResult>;
 }
 ```
 

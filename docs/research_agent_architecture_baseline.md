@@ -1,7 +1,9 @@
 # Personalized Research Intelligence Agent
+
 ## 架构边界、核心数据模型与开发基线
 
 > 文档用途：
+>
 > 1. 作为本项目二次开发的长期架构基线；
 > 2. 供 Codex 在每次修改前进行架构审查；
 > 3. 防止功能开发逐步侵入原有巨型 UI、Agent Runtime 或既有 RAG 底座；
@@ -554,10 +556,7 @@ interface TopicInterest {
   "confidence": 0.91,
   "sources": ["library", "feedback"],
   "lastEvidenceAt": 1788600000000,
-  "evidenceRefs": [
-    "paper:ABC123",
-    "paper:DEF456"
-  ]
+  "evidenceRefs": ["paper:ABC123", "paper:DEF456"]
 }
 ```
 
@@ -568,10 +567,7 @@ interface TopicInterest {
 第一版：
 
 ```ts
-type InterestSource =
-  | "library"
-  | "explicit"
-  | "feedback";
+type InterestSource = "library" | "explicit" | "feedback";
 ```
 
 第一版暂不加入：
@@ -720,11 +716,7 @@ interface RecommendationFeedback {
 
   recommendationId: string;
 
-  action:
-    | "positive"
-    | "negative"
-    | "save"
-    | "skip";
+  action: "positive" | "negative" | "save" | "skip";
 
   timestamp: number;
 }
@@ -801,9 +793,7 @@ interface RecommendationCandidate {
 第一版 CandidateSource 至少支持：
 
 ```ts
-type CandidateSource =
-  | "profile_query"
-  | "seed_recommendation";
+type CandidateSource = "profile_query" | "seed_recommendation";
 ```
 
 可以预留：
@@ -1290,12 +1280,14 @@ docs/development-log.md
 # Development Log
 
 ## Current Baseline
+
 - Upstream commit:
 - Current branch:
 - Current phase:
 - Last verified date:
 
 ## Current Architecture Status
+
 - 已完成模块：
 - 未完成模块：
 - 当前支持链路：
@@ -1304,48 +1296,61 @@ docs/development-log.md
 ## Change History
 
 ### YYYY-MM-DD / Change ID
+
 #### Goal
+
 本次修改目的。
 
 #### Files Changed
+
 - path/to/file
 - path/to/file
 
 #### What Changed
+
 核心实现说明。
 
 #### Architecture Decisions
+
 为什么这样设计。
 是否涉及 architecture baseline 的新决策。
 
 #### Tests
+
 运行了哪些命令：
+
 - npm run ...
-结果：
+  结果：
 - pass / fail
 
 #### Known Issues
+
 当前已知问题。
 
 #### Deferred Work
+
 明确没有在本阶段做什么。
 
 #### Next Recommended Step
+
 下一步建议。
 
 ## Open Decisions
+
 - 决策项
 - 当前方案
 - 备选方案
 - 尚未确定原因
 
 ## Technical Debt
+
 - 技术债
 - 是否来自 upstream
 - 是否由本项目新增
 - 优先级
 
 ## Handoff Notes
+
 供下一个开发者 / ChatGPT / Codex 快速恢复上下文的信息。
 ```
 
@@ -1411,7 +1416,6 @@ Memory Update
 而不是：
 
 > 一个堆叠大量 Agent 框架、Tool 和模型但缺乏清晰业务闭环的 Zotero Chatbot。
-
 
 ## Phase 8 实现事实与 MVP 决策（2026-09-09）
 

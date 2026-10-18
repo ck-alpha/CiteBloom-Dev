@@ -112,7 +112,7 @@ export function registerZoteroItemContextMenu(deps: RegisterMenuDeps): void {
   deps.ztoolkit.Menu?.register?.("item", {
     tag: "menuitem",
     id: MENU_ID,
-    label: t("Add Items as Context to LLM-for-Zotero"),
+    label: t("Add Items as Context to CiteBloom"),
     commandListener: () => {
       const items = deps.getSelectedItems();
       void dispatchZoteroItemsAsContext(items, {

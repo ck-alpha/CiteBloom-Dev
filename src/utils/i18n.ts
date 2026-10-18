@@ -1,5 +1,5 @@
 /**
- * Centralized i18n module for LLM-for-Zotero.
+ * Centralized i18n module for CiteBloom.
  *
  * Design: English is the source of truth. All UI strings stay hardcoded in
  * English throughout the codebase. The `t()` function wraps them — when the
@@ -20,7 +20,7 @@ const zhCN: Record<string, string> = {
   Limitations: "局限性",
 
   // ── Chat panel UI ───────────────────────────────────────────────────────
-  "LLM-for-Zotero": "LLM-for-Zotero",
+  CiteBloom: "CiteBloom",
   "Start a new chat": "开始新对话",
   "Conversation history": "对话历史",
   "Item note": "条目笔记",
@@ -37,8 +37,7 @@ const zhCN: Record<string, string> = {
   "Clear all": "全部清除",
   "Context cleared": "上下文已清除",
   "No context to clear": "没有可清除的上下文",
-  "Add Items as Context to LLM-for-Zotero":
-    "将条目作为上下文添加到 LLM-for-Zotero",
+  "Add Items as Context to CiteBloom": "将条目作为上下文添加到 CiteBloom",
   "No supported default attachment found": "未找到支持的默认附件",
   Rename: "重命名",
   "Rename chat": "重命名对话",
@@ -542,8 +541,8 @@ const zhCN: Record<string, string> = {
   "codex auth": "codex 认证",
   "Codex Auth": "Codex 认证",
   "Codex Direct (Legacy)": "Codex 直连（旧版）",
-  "Uses credentials from `codex login` to call the Codex backend directly through the llm-for-zotero harness. This convenient legacy mode does not provide App Server sessions, MCP or runtime management, sandbox controls, approvals, or permission settings. Use Codex App Server for the full Codex runtime experience.":
-    "使用 `codex login` 的凭据，通过 llm-for-zotero 直接调用 Codex 后端。此便捷的旧版模式不提供 App Server 会话、MCP、运行时管理、沙箱控制、审批或权限设置。若需完整的 Codex 运行时体验，请使用 Codex App Server。",
+  "Uses credentials from `codex login` to call the Codex backend directly through the CiteBloom harness. This convenient legacy mode does not provide App Server sessions, MCP or runtime management, sandbox controls, approvals, or permission settings. Use Codex App Server for the full Codex runtime experience.":
+    "使用 `codex login` 的凭据，通过 CiteBloom 直接调用 Codex 后端。此便捷的旧版模式不提供 App Server 会话、MCP、运行时管理、沙箱控制、审批或权限设置。若需完整的 Codex 运行时体验，请使用 Codex App Server。",
   "Select a Codex Direct model…": "选择一个 Codex 直连模型…",
   Unavailable: "不可用",
   "Fetching Codex Direct models…": "正在获取 Codex 直连模型…",
@@ -779,8 +778,8 @@ const zhCN: Record<string, string> = {
   "Zotero MCP tools enabled but not configured yet.":
     "Zotero MCP 工具已启用，但尚未配置。",
   "Could not read Codex MCP status: ": "无法读取 Codex MCP 状态：",
-  "Codex could not reach Zotero's local MCP server because a proxy or VPN likely intercepted the loopback request (HTTP 502). LLM for Zotero already requested a direct localhost connection. In your proxy app, route localhost, 127.0.0.1, and ::1 directly, fully restart Zotero, and retry. External OpenAI traffic can remain proxied.":
-    "Codex 无法连接 Zotero 的本地 MCP 服务器，因为代理或 VPN 可能拦截了回环请求（HTTP 502）。LLM for Zotero 已要求 localhost 直连。如果问题仍然存在，请在代理应用中将 localhost、127.0.0.1 和 ::1 设为直连，完全重启 Zotero 后重试。外部 OpenAI 流量仍可继续使用代理。",
+  "Codex could not reach Zotero's local MCP server because a proxy or VPN likely intercepted the loopback request (HTTP 502). CiteBloom already requested a direct localhost connection. In your proxy app, route localhost, 127.0.0.1, and ::1 directly, fully restart Zotero, and retry. External OpenAI traffic can remain proxied.":
+    "Codex 无法连接 Zotero 的本地 MCP 服务器，因为代理或 VPN 可能拦截了回环请求（HTTP 502）。CiteBloom 已要求 localhost 直连。如果问题仍然存在，请在代理应用中将 localhost、127.0.0.1 和 ::1 设为直连，完全重启 Zotero 后重试。外部 OpenAI 流量仍可继续使用代理。",
   "Codex could not reach Zotero's local MCP server. Keep Zotero open, make sure its local HTTP server is available, and retry.":
     "Codex 无法连接 Zotero 的本地 MCP 服务器。请保持 Zotero 运行，确认其本地 HTTP 服务器可用，然后重试。",
   "Codex reached Zotero's local MCP server, but authorization failed. Click Install/update Zotero MCP config, then retry.":
@@ -978,7 +977,7 @@ export function getWebChatWelcomeHtml(
   if (getEffectiveLocale().startsWith("zh")) {
     return `
       <div class="llm-start-page llm-webchat-start-page">
-        <div class="llm-start-page-title">LLM-for-Zotero WebChat</div>
+        <div class="llm-start-page-title">CiteBloom WebChat</div>
         <div class="llm-start-page-subtitle">通过已打开的 ${label} 浏览器标签页工作</div>
         <div class="llm-start-page-recommendations">
           <div class="llm-start-page-rec-title">工作方式</div>
@@ -1003,7 +1002,7 @@ export function getWebChatWelcomeHtml(
   }
   return `
     <div class="llm-start-page llm-webchat-start-page">
-      <div class="llm-start-page-title">LLM-for-Zotero WebChat</div>
+      <div class="llm-start-page-title">CiteBloom WebChat</div>
       <div class="llm-start-page-subtitle">Use your open ${label} browser tab</div>
       <div class="llm-start-page-recommendations">
         <div class="llm-start-page-rec-title">How it works</div>
@@ -1064,7 +1063,7 @@ export function getPaperChatStartPageHtml(): string {
   if (getEffectiveLocale().startsWith("zh")) {
     return `
       <div class="llm-start-page">
-        <div class="llm-start-page-title">LLM-for-Zotero</div>
+        <div class="llm-start-page-title">CiteBloom</div>
         <div class="llm-start-page-subtitle">从这里开始，读懂这篇论文的一切</div>
         <div class="llm-start-page-desc">
           <p>论文对话回答关于当前活跃论文的问题。论文将在你提问前预加载到上下文中。</p>
@@ -1076,7 +1075,7 @@ export function getPaperChatStartPageHtml(): string {
   }
   return `
     <div class="llm-start-page">
-      <div class="llm-start-page-title">LLM-for-Zotero</div>
+      <div class="llm-start-page-title">CiteBloom</div>
       <div class="llm-start-page-subtitle">Understand everything of this paper, from here</div>
       <div class="llm-start-page-desc">
         <p>Paper chat answers questions about your current active paper. The paper will be pre-loaded into context before your first question.</p>
@@ -1091,7 +1090,7 @@ export function getNoteEditingStartPageHtml(): string {
   if (getEffectiveLocale().startsWith("zh")) {
     return `
       <div class="llm-start-page">
-        <div class="llm-start-page-title">LLM-for-Zotero</div>
+        <div class="llm-start-page-title">CiteBloom</div>
         <div class="llm-start-page-subtitle">一起写笔记，让想法进化</div>
         <div class="llm-start-page-desc">
           <p>选中一段文字，我可以帮你<strong>重写润色</strong>。</p>
@@ -1103,7 +1102,7 @@ export function getNoteEditingStartPageHtml(): string {
   }
   return `
     <div class="llm-start-page">
-      <div class="llm-start-page-title">LLM-for-Zotero</div>
+      <div class="llm-start-page-title">CiteBloom</div>
       <div class="llm-start-page-subtitle">Write with me, evolve your ideas</div>
       <div class="llm-start-page-desc">
         <p>Select a text snippet, and I can <strong>rewrite</strong> it for you.</p>
@@ -1118,7 +1117,7 @@ export function getStandaloneLibraryChatStartPageHtml(): string {
   if (getEffectiveLocale().startsWith("zh")) {
     return `
       <div class="llm-standalone-start-page">
-        <div class="llm-start-page-title">LLM-for-Zotero Agent</div>
+        <div class="llm-start-page-title">CiteBloom Agent</div>
         <div class="llm-start-page-subtitle">为你和你的文献库服务</div>
         <div class="llm-start-page-recommendations">
           <div class="llm-start-page-rec-title">推荐设置以获得最佳体验</div>
@@ -1134,7 +1133,7 @@ export function getStandaloneLibraryChatStartPageHtml(): string {
   }
   return `
     <div class="llm-standalone-start-page">
-      <div class="llm-start-page-title">LLM-for-Zotero Agent</div>
+      <div class="llm-start-page-title">CiteBloom Agent</div>
       <div class="llm-start-page-subtitle">serve you and your library</div>
       <div class="llm-start-page-recommendations">
         <div class="llm-start-page-rec-title">Recommended settings for the best experience</div>

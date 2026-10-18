@@ -1,4 +1,9 @@
-# Phase 7 宿主与 Provider 验证
+# CiteBloom：Phase 7 宿主与 Provider 历史验证方案
+
+> 本文保留 2026-09-09 的历史结果与指标定义。2026-10-18 的执行状态见
+> [当前评测结果](citebloom-evaluation-results.md)；新的桌面验收入口为
+> [CiteBloom 宿主计划](citebloom-host-validation-plan.md)。独立 OpenAlex API
+> smoke 即使成功，也不替代本页的宿主和 Agent 验收。
 
 本文件是手工验收流程，不代表已在宿主执行。2026-09-09：离线回归已执行；真实 Zotero、重启、group library、OpenAlex 和 embedding smoke 均 **NOT EXECUTED**。当前开发环境没有已连接的 Zotero GUI/DB 宿主。Node SQLite seam 的成功不替代这些检查。
 
@@ -69,7 +74,7 @@ Embedding 已有 deadline 与 evidence 单次读取/总预算超时有明确标�
 
 ## Zotero 操作步骤
 
-使用可丢弃的测试资料库和构建产物 `.scaffold/build/llm-for-zotero.xpi`，记录 Zotero/插件版本、操作系统、commit、library ID、provider 配置名称（不记录密钥）。从插件内 Agent 模式执行；其他后端不支持这些工具。通过现有工具调用记录确认实际工具名与参数。
+使用可丢弃的测试资料库和构建产物 `.scaffold/build/citebloom.xpi`（2026-10-18 更名后的构建名称），记录 Zotero/插件版本、操作系统、commit、library ID、provider 配置名称（不记录密钥）。从插件内 Agent 模式执行；其他后端不支持这些工具。通过现有工具调用记录确认实际工具名与参数。
 
 1. 准备至少两篇具有人工标签/collection 路径及 DOI 的条目；一篇含与研究兴趣一致的摘要。选择个人库。
 2. 调用 `research_profile_get({})`（需求中的 profile_get）。首次 status=built、profileId=`library:<当前 ID>`；再次为 loaded 且版本不变。显式 `{"refresh":true}` 时重建，确认来源与主题可追溯。

@@ -19,7 +19,7 @@ const ZOTERO_MCP_ERROR_MARKERS = [
 ];
 
 const PROXY_INTERCEPTION_MESSAGE =
-  "Codex could not reach Zotero's local MCP server because a proxy or VPN likely intercepted the loopback request (HTTP 502). LLM for Zotero already requested a direct localhost connection. In your proxy app, route localhost, 127.0.0.1, and ::1 directly, fully restart Zotero, and retry. External OpenAI traffic can remain proxied.";
+  "Codex could not reach Zotero's local MCP server because a proxy or VPN likely intercepted the loopback request (HTTP 502). CiteBloom already requested a direct localhost connection. In your proxy app, route localhost, 127.0.0.1, and ::1 directly, fully restart Zotero, and retry. External OpenAI traffic can remain proxied.";
 const ENDPOINT_UNREACHABLE_MESSAGE =
   "Codex could not reach Zotero's local MCP server. Keep Zotero open, make sure its local HTTP server is available, and retry.";
 const AUTHORIZATION_FAILED_MESSAGE =

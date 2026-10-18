@@ -3,12 +3,12 @@
 ## Current Baseline
 
 - Upstream commit: `5be02f51a9bdf9b143439c95eed07bd62a34cb68`（与架构基线一致）。
-- Current branch: `main`；阶段提交按下方 Git 交接约定管理。
-- Personal repository: `https://github.com/ck-alpha/zotero-research-agent`（私有；GitHub 仓库名称变更不修改插件名称或 addon ID）。
+- Delivery branch: remote `main`；本轮开发使用独立 `citebloom-delivery` worktree，保留原工作区的未提交修改。
+- Personal repository target: `https://github.com/ck-alpha/CiteBloom`（public；执行结果见 [交付记录](citebloom-delivery-and-handoff.md)）。对外品牌及 npm/display name 更名，addon ID、prefs 与 DB identity 保留。
 - Phase checkpoint: `phase-8`；历史 phase-1 至 phase-7 保留。阶段实现提交通过 `git rev-parse phase-8^{commit}` 查询，交付目标仅个人 origin/main 与 phase-8。
 - Phase 4 implementation commit：`743e0b813fa4aad8bb730f4fa35ab215c3388211`，由带注释标签 `phase-4` 标识；阶段起点为 `474e2b73c419ddfdd10a786a3726b942585ed034`（Phase 3）。Phase 5 起点为其后远端交付日志提交 5fa52194；不移动既有阶段标签。
-- Current phase: Phase 8 — Research Intelligence Productization（Skill、合同测试与演示文档已实现，真实宿主/live smoke 未执行）。
-- Last verified date: 2026-09-09 (UTC)。
+- Current delivery: CiteBloom portfolio readiness：真实历史交互离线评测、工程检查和更名；Phase 8 是先前实现基线，宿主/live LLM 仍未验收。
+- Last verified date: 2026-10-18 (Asia/Shanghai)。本轮独立 OpenAlex HTTP smoke 已执行，不等于宿主 Agent E2E。
 - Phase 4 修改前 working tree：用户已有未跟踪 `doc/analysis/`、`doc/codex_phase4_personalized_ranking_mmr_prompt.md`、`doc/仓库技术与产品分析报告_2026-09-07.md`；没有已跟踪文件修改。
 - 实际架构基线位于 [docs/research_agent_architecture_baseline.md](research_agent_architecture_baseline.md)，本阶段要求位于 [doc/codex_phase8_research_intelligence_productization_prompt.md](../doc/codex_phase8_research_intelligence_productization_prompt.md)。架构基线在 Phase 1 实现后由用户移至 `docs/`；本交接文档使用要求的 `docs/development-log.md` 路径。
 
@@ -47,6 +47,31 @@
 | MCP / public tool catalog                               | 未暴露；沿用 `localAgentOnly` 过滤                                                                                               |
 
 ## Change History
+
+### 2026-10-18 / CiteBloom offline evaluation and delivery
+
+- 重新 fetch 与核对本地/远程 `main` 均为 `d88abc5cc417e1a1742c1016969c2392340ea41b`。
+  原工作区已有 32 个 tracked 变更（17 个删除、15 个源码修改），保留原状并在仓库外备份 diff；
+  从 origin/main 新建 worktree，未将用户未提交文件混入本轮提交。
+- Node v24.20.0 / npm 11.19.0，Ubuntu 24.04.4 / x86_64；开始时约 28 GiB 可用。
+  GitHub、npm、CiteULike-a 和 OpenAlex 可访问；服务器没有 Zotero，未安装桌面环境。
+- 外部真实数据 CLI 及原创 parser/指标/无泄漏 fixtures 见
+  [评测协议](citebloom-evaluation-protocol.md) 和 [实际结果](citebloom-evaluation-results.md)。
+  复用生产 ProfileBuilder、RankingService、MMR、EvidenceService 和 metrics，未改写实验推荐器。
+  固定候选池包含 held-out 正例；只报告条件排序的隐式交互 proxy，检索效果未评测。
+- 新增真实文件 SQLite 生命周期合同：ProfileService 构建画像、排序曝光、受控反馈、revision、
+  再排序、关闭/重连、幂等提交；同时验证取消、错误 scope、持久写入失败恢复和版本冲突。
+  这是原创 synthetic 合同，不是真实用户反馈提升实验。
+- 对外改名 CiteBloom，保留 Yile Wang、AGPL、上游来源与历史；内部身份不迁移。
+  `.scaffold/build/citebloom.xpi` 构建成功，manifest 保留 legacy addon ID；详见
+  [兼容性说明](citebloom-rename-and-compatibility.md)。
+- 修复历史 CI 指出的 8 份 Markdown 的 Prettier 格式，未改原 Prompt 语义。
+  离线 gate 与手动 desktop host job 分开；原两处宿主超时未声称修复。
+  [CI 诊断](citebloom-ci-diagnostics.md) 保留旧失败证据和复现条件。
+- `npm ci` 成功；依赖审计仍有 29 项，未无脑升级 major。实际 OpenAlex smoke 返回 200、3 条，
+  只验证连通性与字段；见 [Provider 与依赖审查](citebloom-provider-and-dependency-audit.md)。
+- 最终验证命令、退出码、测试总数、commit、Actions 实际结果、远程更名与 push 核对均记录在
+  [交付与下一轮验收入口](citebloom-delivery-and-handoff.md)，不把历史 4,522 passing 充作本轮结果。
 
 ### 2026-09-10 / README redesign
 

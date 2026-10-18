@@ -1,4 +1,30 @@
 import { spawn } from "node:child_process";
+import { accessSync, constants, existsSync, statSync } from "node:fs";
+import { loadEnvFile } from "node:process";
+
+// Preserve the scaffold's documented local .env configuration before preflight.
+if (existsSync(".env")) loadEnvFile(".env");
+
+// Scaffold 0.8.2 otherwise downloads Zotero and installs Linux GUI packages
+// automatically in CI. Host validation must use an explicitly prepared host.
+const zoteroBinary = process.env.ZOTERO_PLUGIN_ZOTERO_BIN_PATH;
+try {
+  if (!zoteroBinary || !statSync(zoteroBinary).isFile()) {
+    throw new Error(
+      "Set ZOTERO_PLUGIN_ZOTERO_BIN_PATH to an existing executable",
+    );
+  }
+  accessSync(zoteroBinary, constants.X_OK);
+  if (process.platform === "linux" && !process.env.DISPLAY) {
+    throw new Error("Linux host tests require an existing desktop DISPLAY");
+  }
+} catch (error) {
+  console.error(`BLOCKED: ZOTERO HOST NOT CONFIGURED. ${error.message}`);
+  console.error(
+    "See docs/citebloom-host-validation-plan.md; no host was installed.",
+  );
+  process.exit(2);
+}
 
 const command = process.platform === "win32" ? "npx.cmd" : "npx";
 const args = ["zotero-plugin", "test", "--no-watch", "--abort-on-fail"];
@@ -10,6 +36,7 @@ const child = spawn(command, args, {
   env: {
     ...process.env,
     NODE_ENV: "test",
+    CITEBLOOM_EXISTING_DESKTOP: "1",
     LLM_FOR_ZOTERO_WORKFLOW_TESTS: "1",
     ...(webChatLive ? { LLM_FOR_ZOTERO_WEBCHAT_LIVE: "1" } : {}),
     ...(agentLive ? { LLM_FOR_ZOTERO_AGENT_LIVE: "1" } : {}),

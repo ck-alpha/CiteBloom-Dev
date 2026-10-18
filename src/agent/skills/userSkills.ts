@@ -172,7 +172,7 @@ const BUILTIN_BOOTSTRAP_RAW_HASHES: Partial<
     "1xglfq0",
     "qdqcm0",
   ],
-  "write-note.md": ["172xn8t", "nvca0f"],
+  "write-note.md": ["172xn8t", "nvca0f", "ys9ojp"],
   "literature-review.md": ["kbrknh", "nxpr5d"],
   "import-cited-reference.md": ["19bomz1"],
 };
@@ -180,6 +180,8 @@ const BUILTIN_BOOTSTRAP_RAW_HASHES: Partial<
 const BUILTIN_BOOTSTRAP_BODY_HASHES: Partial<
   Record<string, ReadonlyArray<string>>
 > = {
+  // Exact managed block shipped before the CiteBloom footer rename.
+  "write-note.md": ["red1fi"],
   "compare-papers.md": [
     "x00ci1",
     "1au58pu",

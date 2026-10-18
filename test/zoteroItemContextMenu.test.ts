@@ -51,7 +51,7 @@ describe("Zotero item context menu dispatch", function () {
     assert.equal(registrations[1].options.tag, "menuitem");
     assert.equal(
       registrations[1].options.label,
-      "Add Items as Context to LLM-for-Zotero",
+      "Add Items as Context to CiteBloom",
     );
     assert.equal(registrations[2].options.tag, "menuseparator");
   });

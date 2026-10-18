@@ -1,4 +1,5 @@
 # Codex Prompt — Phase 0 + Phase 1
+
 ## Personalized Research Intelligence Agent
 
 你现在负责在当前 `llm-for-zotero` 仓库中开始实现 “Personalized Research Intelligence Agent”。
@@ -71,12 +72,14 @@ docs/development-log.md
 # Development Log
 
 ## Current Baseline
+
 - Upstream commit:
 - Current branch:
 - Current phase:
 - Last verified date:
 
 ## Current Architecture Status
+
 - 已完成模块：
 - 未完成模块：
 - 当前支持链路：
@@ -85,13 +88,21 @@ docs/development-log.md
 ## Change History
 
 ### YYYY-MM-DD / Change ID
+
 #### Goal
+
 #### Files Changed
+
 #### What Changed
+
 #### Architecture Decisions
+
 #### Tests
+
 #### Known Issues
+
 #### Deferred Work
+
 #### Next Recommended Step
 
 ## Open Decisions

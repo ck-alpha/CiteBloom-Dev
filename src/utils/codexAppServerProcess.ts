@@ -544,7 +544,7 @@ export class CodexAppServerProcess {
     await this.sendRequest("initialize", {
       clientInfo: {
         name: "llm-for-zotero",
-        title: "LLM for Zotero",
+        title: "CiteBloom",
         version: "1.0",
       },
       capabilities: { experimentalApi: true },
