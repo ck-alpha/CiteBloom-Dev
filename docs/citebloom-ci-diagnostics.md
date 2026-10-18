@@ -137,3 +137,30 @@ gh workflow run citebloom-evaluation.yml -R ck-alpha/CiteBloom --ref main
 artifact 仅包含 `preparation.json`、`medium.json` 与 `medium.md`：文件哈希、许可
 审查、解析质量和指标汇总；不上传 `data/raw`、原始论文元数据/摘要、用户交互行。
 该手动 job 尚未执行时不能根据其定义声称 CI 上真实数据评测已经通过。
+
+## 首次 CiteBloom 远端 CI：单个扫描测试的时间预算
+
+[运行 39092227825](https://github.com/ck-alpha/CiteBloom/actions/runs/39092227825)
+对应 `c037d3ae3a1e03f75a4373ae4fc09e5989c6b0bd`。实际结果为：lint、
+typecheck/cycles、parser/SQLite fixtures、build 成功；unit job 为
+**4540 passing / 1 pending / 1 failing**，offline required gate 正确失败。
+宿主状态报告成功，宿主 integration job 为 **SKIPPED / NOT EXECUTED**。
+
+唯一失败是 `test/importCycles.test.ts` 的
+`does not introduce cycles outside the current allowlist`。日志时间从
+11:04:43.869973 到 11:04:45.971247（Asia/Shanghai，约 2101 ms），超过 Mocha
+默认 2000 ms。
+独立 `check:cycles` 同一 commit 通过，未报告 runtime/static cycle 或过期 allowlist。
+这是源码文件读取与两遍 TypeScript 图解析的测试预算问题，不是已发现的导入环。
+
+修复仅限这个测试：使用异步 `execFile` 启动同一个未修改的
+`scripts/check-import-cycles.cjs`，子进程限制 15 秒，超时强制结束；该 test 的 Mocha
+上限为 20 秒，为进程关闭与错误报告留余量。CLI 仍同时拒绝 unexpected runtime、
+unexpected static、stale runtime allowlist、stale static allowlist 四种情况，
+非零退出直接令测试失败，并检查正常成功输出。没有改图算法、放宽 allowlist、
+删除/跳过用例或全局提高测试超时。移到子进程后，同步扫描也能被实际截止时间终止。
+
+本地针对性复验：import-cycle test **exit 0，1 passing，1732 ms**；
+`npm run check:cycles` **exit 0，0 runtime / 0 static allowlisted**；
+该文件 ESLint/Prettier 通过。首次失败记录保留；修复后的远端结论以
+[交付记录](citebloom-delivery-and-handoff.md)中的新 Actions URL 与实际结果为准。

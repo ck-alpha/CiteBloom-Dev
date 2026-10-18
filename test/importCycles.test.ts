@@ -1,28 +1,33 @@
 import { assert } from "chai";
-import { createRequire } from "module";
+import { execFile } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 
-const require = createRequire(import.meta.url);
-const { checkImportCycles, formatCycle } =
-  require("../scripts/check-import-cycles.cjs") as {
-    checkImportCycles: (root?: string) => {
-      unexpectedRuntime: string[][];
-      staleAllowedRuntime: string[][];
-      unexpectedStatic: string[][];
-      staleAllowedStatic: string[][];
-    };
-    formatCycle: (cycle: string[]) => string;
-  };
-
-function formatCycles(cycles: string[][]): string[] {
-  return cycles.map((cycle) => formatCycle(cycle));
-}
+const execFileAsync = promisify(execFile);
 
 describe("import cycles", function () {
-  it("does not introduce cycles outside the current allowlist", function () {
-    const result = checkImportCycles(process.cwd());
-    assert.deepEqual(formatCycles(result.unexpectedRuntime), []);
-    assert.deepEqual(formatCycles(result.unexpectedStatic), []);
-    assert.deepEqual(formatCycles(result.staleAllowedRuntime), []);
-    assert.deepEqual(formatCycles(result.staleAllowedStatic), []);
+  it("does not introduce cycles outside the current allowlist", async function () {
+    // This scans/parses every source file twice. It exceeded Mocha's default
+    // 2s on Actions run 39092227825 even though the standalone check passed.
+    // Isolate synchronous parsing so a deadline can actually stop the work;
+    // leave the rest of the unit suite's timeout unchanged.
+    this.timeout(20000);
+    const { stdout } = await execFileAsync(
+      process.execPath,
+      [
+        fileURLToPath(
+          new URL("../scripts/check-import-cycles.cjs", import.meta.url),
+        ),
+      ],
+      {
+        cwd: process.cwd(),
+        timeout: 15000,
+        killSignal: "SIGKILL",
+        maxBuffer: 1024 * 1024,
+      },
+    );
+    // The unchanged CLI exits nonzero for all four original conditions:
+    // unexpected/stale-allowlisted cycles in both runtime and static graphs.
+    assert.include(stdout, "Import-cycle check passed");
   });
 });
