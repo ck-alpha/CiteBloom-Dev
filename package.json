@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ck-alpha/CiteBloom.git"
+    "url": "git+https://github.com/ck-alpha/CiteBloom-Dev.git"
   },
   "author": "Yile Wang",
   "bugs": {
-    "url": "https://github.com/ck-alpha/CiteBloom/issues"
+    "url": "https://github.com/ck-alpha/CiteBloom-Dev/issues"
   },
-  "homepage": "https://github.com/ck-alpha/CiteBloom#readme",
+  "homepage": "https://github.com/ck-alpha/CiteBloom-Dev#readme",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",

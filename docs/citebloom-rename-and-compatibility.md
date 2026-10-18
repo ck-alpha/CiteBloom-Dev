@@ -4,7 +4,7 @@
 
 ## 仓库与来源
 
-当前项目入口为 [ck-alpha/CiteBloom](https://github.com/ck-alpha/CiteBloom)。本轮操作针对原 `ck-alpha/zotero-research-agent` 仓库更名，保持原 Git 历史、issues、PR、标签和公开可见性；不创建替代仓库、不强推历史。实际远端仓库身份、重定向验证、提交 SHA 和 Actions 状态以[交付记录](citebloom-delivery-and-handoff.md)为准，不能由文档中的目标 URL 推断操作成功。
+当前开发仓库为 [ck-alpha/CiteBloom-Dev](https://github.com/ck-alpha/CiteBloom-Dev)，由原 `ck-alpha/zotero-research-agent` → `ck-alpha/CiteBloom` 继续更名而来，保留完整 Git 历史、issues、PR、标签、Actions 和公开可见性。新的 [ck-alpha/CiteBloom](https://github.com/ck-alpha/CiteBloom) 是独立历史的源码展示仓库，不包含开发 prompt、测试结果和开发文档。旧提交和 Actions 的链接应使用 `CiteBloom-Dev`，原 `CiteBloom` 地址现在指向新展示仓库。两者均保留上游许可与来源，不强推开发历史。交付细节见[交付记录](citebloom-delivery-and-handoff.md)。
 
 GitHub 的 `fork` 字段不是来源或版权声明。项目基于 [Yile Wang 与贡献者的 llm-for-zotero](https://github.com/yilewang/llm-for-zotero)，继承 Zotero UI、Agent Runtime、RAG/PDF、provider、确认和 change journal 等基础能力。CiteBloom 的新增贡献是 Research Intelligence 领域实现与编排、画像和反馈持久化、排序/MMR、证据边界及可复现离线评测，详见 [README Contributions](../README.md#contributions)。
 
@@ -14,7 +14,7 @@ GitHub 的 `fork` 字段不是来源或版权声明。项目基于 [Yile Wang �
 | ---------------------------------- | --------------------------------------------------------------- |
 | npm `name`、lockfile 根包名称      | `citebloom`                                                     |
 | `description`                      | `Personalized Research Discovery Agent for Zotero`              |
-| `repository` / `bugs` / `homepage` | `ck-alpha/CiteBloom` 对应地址                                   |
+| `repository` / `bugs` / `homepage` | `ck-alpha/CiteBloom-Dev` 对应地址                               |
 | `config.addonName`、manifest name  | `CiteBloom`；manifest 仍通过构建替换 `__addonName__`            |
 | XPI 文件                           | `.scaffold/build/citebloom.xpi`，由 scaffold `xpiName` 显式配置 |
 | 菜单、设置页、启动状态与页签       | 英文和简体中文 Fluent 文案均展示 `CiteBloom`                    |

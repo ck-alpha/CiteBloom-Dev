@@ -1,5 +1,11 @@
 # CiteBloom 交付与下一轮验收入口
 
+双仓库关系（2026-10-18 更新）：[CiteBloom-Dev](https://github.com/ck-alpha/CiteBloom-Dev)
+延续原开发仓库，保留全部 Git 历史、标签、Actions 和开发资料；新
+[CiteBloom](https://github.com/ck-alpha/CiteBloom) 为独立源码快照展示仓库，不包含开发
+prompt、测试结果或开发文档。下文的更名事实、提交 SHA、评测与 CI 结果保留当时的
+历史记录，链接改指 CiteBloom-Dev 以定位原记录，不表示本次重新执行了这些验证。
+
 记录日期：2026-10-18（Asia/Shanghai）。定位：基于 Zotero 的个性化科研文献发现 Agent。
 本轮是工程与离线证据交付，真实 Zotero / live LLM 验收仍阻塞。
 
@@ -10,7 +16,7 @@
 - 原 GitHub 仓库为 `ck-alpha/zotero-research-agent`，repository ID `1359258023`，
   public，`fork=false`，默认分支 `main`；`fork=false` 不改变上游来源与版权归属。
 - 已执行 `gh repo rename CiteBloom`，原仓库成功更名为
-  [ck-alpha/CiteBloom](https://github.com/ck-alpha/CiteBloom)。重命名前后 repository ID
+  [ck-alpha/CiteBloom](https://github.com/ck-alpha/CiteBloom-Dev)。重命名前后 repository ID
   同为 `1359258023`，public / main 不变；description 与 5 个 topics 已更新。
 - 实现提交：`c037d3ae3a1e03f75a4373ae4fc09e5989c6b0bd`，已正常
   `git push origin HEAD:main`；首次 push 后远端 main 与该 SHA 一致。下文保留此实现提交的 Actions，
@@ -111,7 +117,7 @@ npm run check:cycles
 
 ## 远端 Actions 与剩余问题
 
-首次新 CI：[39092227825](https://github.com/ck-alpha/CiteBloom/actions/runs/39092227825)，
+首次新 CI：[39092227825](https://github.com/ck-alpha/CiteBloom-Dev/actions/runs/39092227825)，
 对应实现提交 `c037d3ae3a1e03f75a4373ae4fc09e5989c6b0bd`，实际 conclusion 为 **FAILURE**。
 Lint、类型/cycles、parser/SQLite fixtures、build 均成功；全量 unit 为 4,540 passing /
 1 pending / 1 failing。唯一失败为现有 `test/importCycles.test.ts` 全仓库图扫描耗时约
@@ -122,7 +128,7 @@ Lint、类型/cycles、parser/SQLite fixtures、build 均成功；全量 unit �
 强制截止的子进程，并仅为这一项设置 20 秒报告余量；原四种图检查不变。
 本地再次全量执行为 4,541 passing（39 秒）/ 1 pending，退出 0；没有重跑或调参真实数据实验。
 
-修复后的实际 CI：[39092555887](https://github.com/ck-alpha/CiteBloom/actions/runs/39092555887)，
+修复后的实际 CI：[39092555887](https://github.com/ck-alpha/CiteBloom-Dev/actions/runs/39092555887)，
 源码 commit `f4ed14ba74f4fa3f5be62b49f78412837d1b3474`，**COMPLETED / SUCCESS**，
 2026-10-18 11:10（Asia/Shanghai）核验。各 job 的实际 conclusion：
 

@@ -1,4 +1,10 @@
-# CiteBloom
+# CiteBloom-Dev
+
+This is **CiteBloom-Dev**, the development repository for CiteBloom. It retains
+all Git history, tags, Actions, tests, evaluation records and development
+materials. The [CiteBloom showcase](https://github.com/ck-alpha/CiteBloom) is an
+independent source snapshot without development prompts, test reports or
+development documents.
 
 **基于 Zotero 的个性化科研文献发现 Agent**
 
@@ -14,7 +20,7 @@ claim those inherited foundations as original work. The GitHub repository retain
 the existing history. Package version `3.9.5` is inherited and unchanged; this
 rename does not announce a new release.
 
-[![Offline quality](https://github.com/ck-alpha/CiteBloom/actions/workflows/ci.yml/badge.svg)](https://github.com/ck-alpha/CiteBloom/actions/workflows/ci.yml)
+[![Offline quality](https://github.com/ck-alpha/CiteBloom-Dev/actions/workflows/ci.yml/badge.svg)](https://github.com/ck-alpha/CiteBloom-Dev/actions/workflows/ci.yml)
 [![License: AGPL-3.0-or-later](https://img.shields.io/badge/License-AGPL--3.0--or--later-blue)](LICENSE)
 
 [Scripted demo](docs/research-intelligence-demo.md) ·
@@ -318,8 +324,8 @@ docs/
 Use Node.js 24 and npm to reproduce the documented development environment:
 
 ```sh
-git clone https://github.com/ck-alpha/CiteBloom.git
-cd CiteBloom
+git clone https://github.com/ck-alpha/CiteBloom-Dev.git
+cd CiteBloom-Dev
 npm ci
 npm run build
 ```
@@ -397,5 +403,5 @@ upload work; those credits and upstream support links remain in the preserved
 guide.
 
 For CiteBloom bugs, documentation changes and contributions, use
-[ck-alpha/CiteBloom issues](https://github.com/ck-alpha/CiteBloom/issues)
+[ck-alpha/CiteBloom-Dev issues](https://github.com/ck-alpha/CiteBloom-Dev/issues)
 or submit a pull request to this repository.

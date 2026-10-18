@@ -57,8 +57,8 @@ Node 24 与 npm 由 job 配置。不得把无 runner 的排队状态写成 PASS�
 `run_host_tests`，或者：
 
 ```sh
-gh workflow run ci.yml -R ck-alpha/CiteBloom --ref main -f run_host_tests=true
-gh run list -R ck-alpha/CiteBloom --workflow ci.yml --limit 5
+gh workflow run ci.yml -R ck-alpha/CiteBloom-Dev --ref main -f run_host_tests=true
+gh run list -R ck-alpha/CiteBloom-Dev --workflow ci.yml --limit 5
 ```
 
 该 job 仅接受显式 workflow_dispatch，PR 不在桌面 runner 执行。完整 host suite

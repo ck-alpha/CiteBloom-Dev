@@ -5,7 +5,7 @@
 
 ## 已核验的历史失败
 
-[历史运行 34423048197](https://github.com/ck-alpha/CiteBloom/actions/runs/34423048197)
+[历史运行 34423048197](https://github.com/ck-alpha/CiteBloom-Dev/actions/runs/34423048197)
 的 commit 是 `d88abc5cc417e1a1742c1016969c2392340ea41b`，创建时间为
 2026-09-10 08:51:21（Asia/Shanghai）。它不是本轮的验证结果。
 
@@ -30,9 +30,9 @@
 可复核历史证据（不需要导出凭据）：
 
 ```sh
-gh run view 34423048197 -R ck-alpha/CiteBloom --json headSha,conclusion,jobs,url
-gh api repos/ck-alpha/CiteBloom/actions/jobs/102702410769/logs
-gh api repos/ck-alpha/CiteBloom/actions/jobs/102702410907/logs
+gh run view 34423048197 -R ck-alpha/CiteBloom-Dev --json headSha,conclusion,jobs,url
+gh api repos/ck-alpha/CiteBloom-Dev/actions/jobs/102702410769/logs
+gh api repos/ck-alpha/CiteBloom-Dev/actions/jobs/102702410907/logs
 ```
 
 本轮 `gh run view --log-failed` 返回空文本，随后直接读取 job 日志成功。
@@ -131,7 +131,7 @@ Zotero。为遵守本轮边界，wrapper 在 spawn 前要求现有
 最后生成 aggregate report。失败保留非零结果，不宣传成功。
 
 ```sh
-gh workflow run citebloom-evaluation.yml -R ck-alpha/CiteBloom --ref main
+gh workflow run citebloom-evaluation.yml -R ck-alpha/CiteBloom-Dev --ref main
 ```
 
 artifact 仅包含 `preparation.json`、`medium.json` 与 `medium.md`：文件哈希、许可
@@ -140,7 +140,7 @@ artifact 仅包含 `preparation.json`、`medium.json` 与 `medium.md`：文件�
 
 ## 首次 CiteBloom 远端 CI：单个扫描测试的时间预算
 
-[运行 39092227825](https://github.com/ck-alpha/CiteBloom/actions/runs/39092227825)
+[运行 39092227825](https://github.com/ck-alpha/CiteBloom-Dev/actions/runs/39092227825)
 对应 `c037d3ae3a1e03f75a4373ae4fc09e5989c6b0bd`。实际结果为：lint、
 typecheck/cycles、parser/SQLite fixtures、build 成功；unit job 为
 **4540 passing / 1 pending / 1 failing**，offline required gate 正确失败。
