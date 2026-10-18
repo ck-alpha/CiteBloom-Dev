@@ -9,8 +9,15 @@
   `d88abc5cc417e1a1742c1016969c2392340ea41b`。
 - 原 GitHub 仓库为 `ck-alpha/zotero-research-agent`，repository ID `1359258023`，
   public，`fork=false`，默认分支 `main`；`fork=false` 不改变上游来源与版权归属。
-- 本轮目标为原仓库更名至 [ck-alpha/CiteBloom](https://github.com/ck-alpha/CiteBloom)，
-  保留历史、标签、issues、PR 与可见性。远端执行结果将在实际 push 后补入本节。
+- 已执行 `gh repo rename CiteBloom`，原仓库成功更名为
+  [ck-alpha/CiteBloom](https://github.com/ck-alpha/CiteBloom)。重命名前后 repository ID
+  同为 `1359258023`，public / main 不变；description 与 5 个 topics 已更新。
+- 实现提交：`c037d3ae3a1e03f75a4373ae4fc09e5989c6b0bd`，已正常
+  `git push origin HEAD:main`；首次 push 后远端 main 与该 SHA 一致。下文保留此实现提交的 Actions，
+  本交付记录随后通过单独 docs 提交正常推送；文档提交自身 SHA 可由 `git rev-parse HEAD` 查得。
+- 旧 GitHub 页面实际返回 HTTP 301 至新地址；更名前后全部 16 行远端 tag refs 完全相同。
+  远端 README、LICENSE 的 Git blob SHA 与本地一致；LICENSE 未改，Yile Wang 作者保留。
+  本地 origin 已改为新 HTTPS URL，upstream 仍指向原上游。
 - 原工作区 `llm-for-zotero` 有 32 个既有 tracked 变更（17 个删除、15 个源码修改）。
   已备份二进制 diff 与状态，在独立 `citebloom-delivery` worktree 开发；没有 reset、clean、
   stash 或提交这些未知改动。原工作区仍由用户保有，不能声称它已干净。
@@ -60,7 +67,8 @@ OpenAlex 均实际可访问。日期面向用户使用 Asia/Shanghai，机器报
 | `npm run lint:check`               |      0 | 完整 Prettier + ESLint 通过，未禁用 lint 或隐藏原文档                                       |
 | `npm run typecheck`                |      0 | 插件 TypeScript 检查通过                                                                    |
 | `npm run eval:citebloom:typecheck` |      0 | 独立离线 CLI 严格类型检查通过                                                               |
-| `npm run test:unit`                |      0 | 最终全量 4,541 passing（41 秒）/ 1 existing pending                                         |
+| `npm run test:unit`                |      0 | 最终全量 4,541 passing（39 秒）/ 1 existing pending                                         |
+| `npm run test:eval:citebloom`      |      0 | 13 passing，原创解析/编码/指标/无泄漏/确定性 fixtures                                       |
 | `npm run test:feedback:sqlite`     |      0 | 4 passing，真实文件数据库关闭/重连、幂等与版本合同                                          |
 | `npm run build`                    |      0 | 产物 `.scaffold/build/citebloom.xpi`；manifest name、new URLs、legacy addon ID 与作者已检查 |
 | `npm run check:cycles`             |      0 | 0 runtime / 0 static allowlisted cycles                                                     |
@@ -74,7 +82,12 @@ CSV fixture 的 4 处冗余转义。均按具体文件修复；最终完整 lint
 原有 pending 位于 `test/webchatExtensionContracts.test.ts`：相邻 sync-for-zotero
 扩展仓库不存在时跳过 DeepSeek DOM 兼容性检查；本轮未新增该 skip。
 
-本地数据命令、退出码、真实 10/50 与 100/200 结果见评测结果文档。完整可复现入口：
+真实 10/50 与 100/200 两组 benchmark 及各自独立确定性复跑均退出 0；
+默认 prepare（缓存校验）、prepare --offline 与 report 命令也实际退出 0。
+中等样本为 100 用户、3,413 train / 806 test，稳定结果 SHA-256 为
+`6a909114968e5f5d54f5383801d036a434edd48faa7d039caef594c6ad37f972`。
+完整指标、5 份数据 SHA-256、源文件编码缺陷和两次初始 prepare 失败见结果文档。
+完整可复现入口：
 
 ```sh
 npm ci
@@ -98,7 +111,37 @@ npm run check:cycles
 
 ## 远端 Actions 与剩余问题
 
-最终 Actions URL 与各 job conclusion 在真实推送后记录。新 CI 定义不等于已执行 PASS。
+首次新 CI：[39092227825](https://github.com/ck-alpha/CiteBloom/actions/runs/39092227825)，
+对应实现提交 `c037d3ae3a1e03f75a4373ae4fc09e5989c6b0bd`，实际 conclusion 为 **FAILURE**。
+Lint、类型/cycles、parser/SQLite fixtures、build 均成功；全量 unit 为 4,540 passing /
+1 pending / 1 failing。唯一失败为现有 `test/importCycles.test.ts` 全仓库图扫描耗时约
+2.101 秒，超出 Mocha 默认 2 秒；独立 cycles job 实际通过。没有发现循环依赖，
+也不是宿主测试失败；offline gate 正确失败。
+
+后续修复提交 `f4ed14ba74f4fa3f5be62b49f78412837d1b3474` 将该用例移到有 15 秒
+强制截止的子进程，并仅为这一项设置 20 秒报告余量；原四种图检查不变。
+本地再次全量执行为 4,541 passing（39 秒）/ 1 pending，退出 0；没有重跑或调参真实数据实验。
+
+修复后的实际 CI：[39092555887](https://github.com/ck-alpha/CiteBloom/actions/runs/39092555887)，
+源码 commit `f4ed14ba74f4fa3f5be62b49f78412837d1b3474`，**COMPLETED / SUCCESS**，
+2026-10-18 11:10（Asia/Shanghai）核验。各 job 的实际 conclusion：
+
+| Job                                          | 实际状态                                     |
+| -------------------------------------------- | -------------------------------------------- |
+| Offline lint                                 | SUCCESS                                      |
+| Offline typecheck and cycles                 | SUCCESS                                      |
+| Offline unit and SQLite contracts            | SUCCESS；4,541 passing / 1 existing pending  |
+| Offline parser, metrics and leakage fixtures | SUCCESS；13 parser/eval + 4 SQLite contracts |
+| Offline build                                | SUCCESS；citebloom-build artifact 已上传     |
+| Offline required gate                        | SUCCESS                                      |
+| Zotero host validation status                | SUCCESS；该 job 仅报告 NOT EXECUTED          |
+| Zotero host integration (manual desktop)     | SKIPPED / NOT EXECUTED                       |
+
+该成功结果没有抹去首次新 CI 的失败，也没有修改历史宿主失败的状态。
+本交付记录及 development log 的收尾提交只更新文档；源码验证基线固定为上述 f4ed14ba。
+完整 SHA、运行 URL 与可下载 XPI 在 GitHub 上可独立核验。手动外部 CiteULike workflow
+本轮未 dispatch；真实数据评测实际在本服务器运行，不能称已在该远端 job 执行。
+
 默认 offline gate 包含 lint、两套 typecheck/cycles、全量 unit/SQLite、parser/指标/泄漏
 fixtures 和 build。宿主 status job 明示 NOT EXECUTED；真正 host integration 是手动
 desktop job，默认 SKIPPED。手动外部数据 workflow 不进入 PR 必跑 gate。

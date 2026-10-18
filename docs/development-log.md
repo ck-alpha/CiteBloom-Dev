@@ -4,8 +4,8 @@
 
 - Upstream commit: `5be02f51a9bdf9b143439c95eed07bd62a34cb68`（与架构基线一致）。
 - Delivery branch: remote `main`；本轮开发使用独立 `citebloom-delivery` worktree，保留原工作区的未提交修改。
-- Personal repository target: `https://github.com/ck-alpha/CiteBloom`（public；执行结果见 [交付记录](citebloom-delivery-and-handoff.md)）。对外品牌及 npm/display name 更名，addon ID、prefs 与 DB identity 保留。
-- Phase checkpoint: `phase-8`；历史 phase-1 至 phase-7 保留。阶段实现提交通过 `git rev-parse phase-8^{commit}` 查询，交付目标仅个人 origin/main 与 phase-8。
+- Personal repository: `https://github.com/ck-alpha/CiteBloom`（public；执行结果见 [交付记录](citebloom-delivery-and-handoff.md)）。对外品牌及 npm/display name 更名，addon ID、prefs 与 DB identity 保留。
+- Phase checkpoint: `phase-8`；历史 phase-1 至 phase-7 保留。阶段实现提交通过 `git rev-parse phase-8^{commit}` 查询；本轮仅正常推送 origin/main，保留全部既有 tags。
 - Phase 4 implementation commit：`743e0b813fa4aad8bb730f4fa35ab215c3388211`，由带注释标签 `phase-4` 标识；阶段起点为 `474e2b73c419ddfdd10a786a3726b942585ed034`（Phase 3）。Phase 5 起点为其后远端交付日志提交 5fa52194；不移动既有阶段标签。
 - Current delivery: CiteBloom portfolio readiness：真实历史交互离线评测、工程检查和更名；Phase 8 是先前实现基线，宿主/live LLM 仍未验收。
 - Last verified date: 2026-10-18 (Asia/Shanghai)。本轮独立 OpenAlex HTTP smoke 已执行，不等于宿主 Agent E2E。
@@ -70,6 +70,11 @@
   [CI 诊断](citebloom-ci-diagnostics.md) 保留旧失败证据和复现条件。
 - `npm ci` 成功；依赖审计仍有 29 项，未无脑升级 major。实际 OpenAlex smoke 返回 200、3 条，
   只验证连通性与字段；见 [Provider 与依赖审查](citebloom-provider-and-dependency-audit.md)。
+- 首次新 CI 的 import cycle 单测在约 2.101 秒超过默认 2 秒；独立 cycle job 已通过。
+  后续将同一检测移到有硬截止的子进程，仅调整该用例预算，未变更图算法或全局 timeout；
+  修复后本地全量再次为 4,541 passing / 1 pending。`f4ed14ba74f4fa3f5be62b49f78412837d1b3474`
+  的 [CI 39092555887](https://github.com/ck-alpha/CiteBloom/actions/runs/39092555887)
+  实际 SUCCESS；全部离线 jobs 通过，host integration SKIPPED，原宿主超时仍未验证修复。
 - 最终验证命令、退出码、测试总数、commit、Actions 实际结果、远程更名与 push 核对均记录在
   [交付与下一轮验收入口](citebloom-delivery-and-handoff.md)，不把历史 4,522 passing 充作本轮结果。
 
